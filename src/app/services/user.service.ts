@@ -44,7 +44,29 @@ export class UserService {
           if (dataUser.avatar == null) {
             dataUser.avatar = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
           }
-          ;
+
+          localStorage.setItem("user", JSON.stringify(response.payload!.user));
+          localStorage.setItem("avatar", JSON.stringify(dataUser.avatar));
+          localStorage.setItem('auth_token', response.payload!.token);
+          localStorage.setItem('token_type', JSON.stringify(response.payload!.token_type));
+          this.userSubject.next(response.payload.user);
+          this.jwtToken.next(response.payload.token);
+        }
+
+        return response.status;
+      }));
+  }
+  fakeLogin(data: {
+    campus_code: string,
+  }) {
+    return this.http.post<ResponsePayload>(environment.fakeLoginUrl, data)
+      .pipe(map(response => {
+        if (response.status == true) {
+          let dataUser = response.payload!.user;
+          if (dataUser.avatar == null) {
+            dataUser.avatar = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+          }
+
           localStorage.setItem("user", JSON.stringify(response.payload!.user));
           localStorage.setItem("avatar", JSON.stringify(dataUser.avatar));
           localStorage.setItem('auth_token', response.payload!.token);
