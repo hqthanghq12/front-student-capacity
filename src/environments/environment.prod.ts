@@ -11,6 +11,7 @@ export const environment = {
   // GG_CLIENT_ID: "723333154556-dbmchqand5vseqtfhskvdo121stiohqd.apps.googleusercontent.com", // tuannda3 config
   // GG_CLIENT_SECRET: "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", // tuannda3 config
   loginUrl: authApi + "/login-token",
+  fakeLoginUrl: authApi + "/fake-login",
   publicApiUrl: `${baseApiUrl}/public`,
   sponsorListUrl: `${publicApiUrl}/sponsors`,
   contestListUrl: `${publicApiUrl}/contests`,
