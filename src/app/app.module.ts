@@ -51,8 +51,14 @@ import {CapacityDetailComponent} from './pages/capacity-detail/capacity-detail.c
 import {CapacityRelatedItemComponent} from './component/capacity-related-item/capacity-related-item.component';
 import {TestCapacityComponent} from "./pages/test-capacity/test-capacity.component";
 import {InfoTeamComponent} from "./pages/info-team/info-team.component";
-
-
+import { SemeterComponent } from './component/semeter/semeter.component';
+import { PoetryComponent } from './pages/poetry/poetry.component';
+import { TopicExamComponent } from './pages/topic-exam/topic-exam.component';
+import { CapacityExamNewComponent } from './pages/capacity-exam-new/capacity-exam-new.component';
+import { ReplaceContentPipe } from './replace-content.pipe';
+import { MathjaxDirective } from './directive/mathjax.directive';
+import { RenderMathDirective } from './directive/render-math.directive';
+import {MathModule} from './math/math.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,8 +81,16 @@ import {InfoTeamComponent} from "./pages/info-team/info-team.component";
     CapacityRelatedItemComponent,
     TestCapacityComponent,
     InfoTeamComponent,
+    SemeterComponent,
+    PoetryComponent,
+    TopicExamComponent,
+    CapacityExamNewComponent,
+    ReplaceContentPipe,
+    MathjaxDirective,
+    RenderMathDirective
   ],
   imports: [
+    MathModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     NgbModule,

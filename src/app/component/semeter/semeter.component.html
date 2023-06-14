@@ -1,0 +1,30 @@
+<div class="capacity__related-item">
+    <div class="capacity__related-content">
+      <a class="capacity__related-content-title-link">
+        <h2 class="capacity__related-content-title">{{ SemeterItem.name }}</h2>
+      </a>
+  
+      <ul class="capacity__related-content-list">
+        <li class="capacity__related-content-list-item">
+          <div class="capacity__related-content-list-item-icon">
+            <i class="fa-solid fa-file-pen"></i>
+          </div>
+  
+          {{  SemeterItem.total_poetry }} bài thi
+        </li>
+    
+      </ul>
+  
+      <ul class="capacity__related-countdown">
+        <li class="capacity__related-countdown-item text-center">
+            <span class="capacity__related-countdown-item-text">Thời gian bắt đầu</span>
+          <div class="capacity__related-countdown-item-box">
+            {{ SemeterItem.start_time }}
+          </div>
+        </li>
+      </ul>
+  
+      <button class="btn btn-register capacity__related-content-btn" (click)="handleGotoPoetry(SemeterItem.id)" [disabled]="SemeterItem.status === 0 ">Vào kỳ thi</button>
+    </div>
+  </div>
+  

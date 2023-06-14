@@ -15,6 +15,15 @@ export class RoundService {
     return this.http.get<ResponsePayload>(environment.roundListUrl + '/' + id);
   }
 
+  getExamsWhereId(id: any): Observable<ResponsePayload> {
+    return this.http.get<ResponsePayload>(environment.ExamListUrl + '/' + id);
+  }
+
+  getpoetryOnesWhereId(id_poetry: number): Observable<ResponsePayload> {
+    return this.http.get<ResponsePayload>(environment.ExamItemPoetry + '/' + id_poetry);
+  }
+
+
   // Get Thông tin đội thông qua id vòng thi
   getInfoTeamFromContestId(round_id: any): Observable<ResponsePayload> {
     return this.http.get<ResponsePayload>(`${environment.roundV1Url}/${round_id}/team-me`);
@@ -207,6 +216,10 @@ export class RoundService {
     return this.http.post<ResponsePayload>(`${environment.takeExamUrl}/student-capacity`, {round_id});
   }
 
+  getInfoCapacityExam(id: number): Observable<ResponsePayload> {
+    // status: 1 - đang làm, 2 - đã nộp
+    return this.http.post<ResponsePayload>(`${environment.takeExamUrl}/student-exam`, {id});
+  }
   // Sinh viên nộp bài
   submitExam(resultExam: Object): Observable<ResponsePayload> {
     const headers = new HttpHeaders();

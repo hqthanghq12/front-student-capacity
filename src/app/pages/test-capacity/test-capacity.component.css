@@ -11,7 +11,7 @@
 }
 
 .test-capacity__item {
-  @apply tw-bg-white tw-p-3 tw-rounded-xl;
+  @apply tw-bg-white tw-p-3 tw-rounded-xl ;
 }
 
 .test-capacity__title {

@@ -4,27 +4,36 @@ import {RoundService} from 'src/app/services/round.service';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {map, switchMap} from 'rxjs';
+import {map, switchMap,forkJoin } from 'rxjs';
 import {Round} from 'src/app/models/round.model';
 import {MatDialog} from '@angular/material/dialog';
 import {UserService} from 'src/app/services/user.service';
-
+import { Playtopic } from 'src/app/models/playtopic.model';
+import { PlaytopicServiceService } from 'src/app/services/playtopic-service.service';
+import { ResultCapacityService } from 'src/app/services/result-capacity.service';
+import { MathContent } from 'src/app/math/math-content';
 @Component({
-  selector: 'app-capacity-exam',
-  templateUrl: './capacity-exam.component.html',
-  styleUrls: ['./capacity-exam.component.css']
+  selector: 'app-capacity-exam-new',
+  templateUrl: './capacity-exam-new.component.html',
+  styleUrls: ['./capacity-exam-new.component.css']
 })
-export class CapacityExamComponent implements OnInit {
+export class CapacityExamNewComponent implements OnInit {
 
   @ViewChildren("questions") questions: QueryList<ElementRef>;
+  Exam : any;
   formAnswers!: FormGroup;
   data: any;
+  idExam : number;
   fakeQuestionData!: any;
+  checkUserExam = false;
+
   // DS id câu hỏi đã trả lời
   questionListId: { questionId: number }[] = [];
   round_id: number;
   isTakingExam = false;
   roundDetail!: Round;
+  DataPoetry : any;
+  statusExam : boolean= false;
   isFetchingRound = false;
   countDownTimeExam: { minutes: number | string, seconds: number | string } = {
     minutes: "00",
@@ -35,30 +44,75 @@ export class CapacityExamComponent implements OnInit {
 
   constructor(
     private roundService: RoundService,
+    private resultExam : ResultCapacityService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private userService: UserService,
     private toast: NgToastService,
-    private router: Router
+    private router: Router,
+    private PlaytopicServiceService : PlaytopicServiceService,
   ) {
+  
   }
 
   ngOnInit(): void {
     this.isFetchingRound = true;
-    this.route.paramMap
-      .pipe(
-        map(params => params.get('round_id')),
-        switchMap(id => this.roundService.getRoundWhereId(id))
-      )
-      .subscribe(res => {
-        if (res.status) {
-          this.isFetchingRound = false;
-          this.roundDetail = res.payload;
-          this.roundDetail.start_time = new Date("2022-06-25 15:25:54");
-          this.round_id = res.payload.id;
-        }
+    this.route.params.subscribe(params => {
+      const {id_user,id_poetry,id_campus,id_subject} =  params;
+      this.PlaytopicServiceService.getAllTopics(id_user,id_poetry,id_campus,id_subject).subscribe(resExam => {
+        
+        if(Object.keys(resExam.payload).length > 0){
+            this.Exam = resExam.payload
+            this.idExam = this.Exam.id_exam;
+            this.statusExam = true;
+            forkJoin([
+              this.resultExam.ResultExam(id_user,this.Exam.id_exam),
+              this.roundService.getExamsWhereId(this.Exam.id_exam),
+              // this.roundService.getpoetryOnesWhereId(id_poetry)
+            ]).subscribe(([resEXam,resExams ]) => {
+              // resPoetry
+              if(resEXam.payload == null){
+                // console.log(resEXam);
+                this.isFetchingRound = false;
+                this.checkUserExam = true;
+              }
+              if (resExams.status) {
+                this.isFetchingRound = false;
+                this.roundDetail = resExams.payload;
+                this.roundDetail.start_time = new Date("2022-06-25 15:25:54");
+                this.round_id = resExams.payload.id;
+             
+              }
+              // this.DataPoetry = resPoetry.payload;
+              // console.log(resPoetry.payload);
+              
+              // console.log(this.DataPoetry);
+            });
+          }
       })
+    })
   }
+
+  mathMl: MathContent = {
+    mathml: `<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mover>
+      <munder>
+        <mo>∫</mo>
+        <mn>0</mn>
+      </munder>
+      <mi>∞</mi>
+    </mover>
+    <mtext> versus </mtext>
+    <munderover>
+      <mo>∫</mo>
+      <mn>0</mn>
+      <mi>∞</mi>
+    </munderover>
+  </mrow>
+</math>`
+  };
+
 
   // làm bài
   handleTakeExam() {
@@ -90,21 +144,61 @@ export class CapacityExamComponent implements OnInit {
           this.toast.warning({summary: "Chưa đến thời gian làm bài"});
           return;
         }
+        
+        
+        // this.roundService.getInfoCapacityExam(this.Exam.id_exam).subscribe(res => {
+        //   if (res.status) {
+        //     console.log(res);
+        //     if (res.status) {
+        //       this.data = res.payload;
+  
+        //       this.isTakingExam = true;
+  
+        //       this.fakeQuestionData = this.data.questions;
+        //       this.createFormControl();
+        //       const durationExam = this.roundDetail.time_type_exam == 1 ? (this.data.time * 60 * 60) : this.data.time * 60;
+        //       console.log(res.payload);
+              
+        //       this.handleStartExam(durationExam, this.data.created_at);
+        //       console.log(res.payload);
+  
+        //     }
+        //   }
+        // })
 
         // fake api tạo bản nháp
-        this.roundService.getInfoCapacityExamRound(this.round_id).subscribe(res => {
-          console.log(this.round_id);
-          
+        console.log(this.idExam);
+        
+        this.roundService.getInfoCapacityExam(this.idExam).subscribe(res => {
+          // console.log(res);
           if (res.status) {
-            console.log(res);
             this.data = res.payload;
 
             this.isTakingExam = true;
-
             this.fakeQuestionData = this.data.questions;
             this.createFormControl();
-            const durationExam = this.roundDetail.time_type_exam == 1 ? (this.roundDetail.time_exam * 60 * 60) : this.roundDetail.time_exam * 60;
+            const durationExam = this.roundDetail.time_type_exam == 1 ? (this.data.time * 60 * 60) : this.data.time * 60;
+            const regex = /\[anh\d*\]/g;
+         
+            console.log(this.data);
+            // for (const question of this.data.questions) {
+            //   const result = question.content.match(regex);
+            //   if (result) {
+            //     const cleanedMatches = result.map((match:string) => match.replace(/\[|\]/g, ''));
+            //     const nameImg = cleanedMatches[0];
+            //     for (const imgs of this.data.images) {
+            //       if(imgs.img_code == nameImg){
+
+            //       }
+            //     }
+            //   } else {
+            //     console.log("Không tìm thấy chuỗi chứa '[anh]'");
+            //   }
+            // }
+            
             this.handleStartExam(durationExam, this.data.created_at);
+           
+
           }
         });
       }
@@ -150,6 +244,8 @@ export class CapacityExamComponent implements OnInit {
       });
 
       confirmSubmitExam.afterClosed().subscribe(result => {
+        console.log(result);
+        
         // xác nhận nộp bài
         if (result === "true") {
           // this.openDialogSubmitExam();
@@ -248,7 +344,7 @@ export class CapacityExamComponent implements OnInit {
 
     let timerId: any;
     let futureDate = new Date(timeWillEndExam).getTime();
-    console.log(futureDate);
+    // console.log(futureDate);
     timerId = setInterval(() => {
       let today = new Date().getTime();
 
@@ -319,11 +415,32 @@ export class CapacityExamComponent implements OnInit {
     }
   }
 
+
   handleSubmitExamPost() {
     this.openDialogSubmitExam();
     this.roundService.submitExam(this.getResultExam()).subscribe(res => {
       console.log(res);
       this.dialog.closeAll();
+     
+       this.route.params.subscribe(params => {
+      const  {id_user,id_poetry,id_campus,id_subject,id_semeter} =  params;
+      if(res.status){
+        this.dialog.open(DialogConfirmComponent, {
+          width: '500px',
+          disableClose: true,
+          data: {
+            description: "Nộp bài thành công",
+            isNotShowBtn: false,
+            title: "Bấm ok để hoàn tác quá trình nộp bài",
+            isShowLoading: false,
+          }
+        })
+      this.router.navigate(['/ca-thi', id_semeter]);
+      }
+     
+      
+    })
+
     })
   }
 
