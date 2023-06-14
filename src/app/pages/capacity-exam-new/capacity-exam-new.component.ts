@@ -71,6 +71,8 @@ export class CapacityExamNewComponent implements OnInit {
               // this.roundService.getpoetryOnesWhereId(id_poetry)
             ]).subscribe(([resEXam,resExams ]) => {
               // resPoetry
+              console.log(resEXam.payload);
+              
               if(resEXam.payload == null){
                 // console.log(resEXam);
                 this.isFetchingRound = false;
