@@ -33,7 +33,6 @@ export class CapacityExamNewComponent implements OnInit {
   isTakingExam = false;
   roundDetail!: Round;
   DataPoetry : any;
-  statusExam : boolean= false;
   isFetchingRound = false;
   countDownTimeExam: { minutes: number | string, seconds: number | string } = {
     minutes: "00",
@@ -64,7 +63,6 @@ export class CapacityExamNewComponent implements OnInit {
         if(Object.keys(resExam.payload).length > 0){
             this.Exam = resExam.payload
             this.idExam = this.Exam.id_exam;
-            this.statusExam = true;
             forkJoin([
               this.resultExam.ResultExam(id_user,this.Exam.id_exam),
               this.roundService.getExamsWhereId(this.Exam.id_exam),
@@ -81,6 +79,7 @@ export class CapacityExamNewComponent implements OnInit {
               if (resExams.status) {
                 this.isFetchingRound = false;
                 this.roundDetail = resExams.payload;
+                
                 this.roundDetail.start_time = new Date("2022-06-25 15:25:54");
                 this.round_id = resExams.payload.id;
              

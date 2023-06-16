@@ -1,6 +1,6 @@
 
-<div *ngIf="checkUserExam;else checkUser">
-  <div class="container my-4" *ngIf="statusExam;else templateName">
+<!-- *ngIf="statusExam;else templateName" -->
+  <div class="container my-4" *ngIf="checkUserExam;else checkUser" >
     <div class="capacity__exam-heading" *ngIf="!isFetchingRound">
       <div class="capacity__exam-heading-inner d-flex align-items-center justify-content-center">
         <span class="capacity__exam-heading-line"></span>
@@ -139,18 +139,7 @@
     </form>
     
   </div>
-  <ng-template #templateName>
-    <div class="container my-4" #templateName>
-      <section class="capacity__exam-description text-center">
-        <h2 class="text-center capacity__exam-description-title">
-          Bạn không có bài thi nào trong ca thi này
-        </h2>
-    
-      </section>
-    </div>
-  </ng-template>
-</div>
-
+ 
 <ng-template #checkUser>
   <div class="container my-4" >
     <section class="capacity__exam-description text-center">
