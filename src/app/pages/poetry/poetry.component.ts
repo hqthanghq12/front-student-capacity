@@ -41,6 +41,7 @@ export class PoetryComponent implements OnInit {
       this.PoetryService.getAllPoetry(poetry_id,userLogged.id).subscribe(res => {
         if(res.status){
           this.listpoetry = res.payload.data;
+          console.log(res.payload.data);
           this.nameSemeter = res.payload.name_item;
           this.statusExam = true;
           this.isFetchingCapacity = false;

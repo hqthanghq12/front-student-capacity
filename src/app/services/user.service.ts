@@ -56,11 +56,16 @@ export class UserService {
         return response.status;
       }));
   }
+
+
   fakeLogin(data: {
     campus_code: string,
+    email_user : string
   }) {
     return this.http.post<ResponsePayload>(environment.fakeLoginUrl, data)
       .pipe(map(response => {
+        // console.log(response);
+        
         if (response.status == true) {
           let dataUser = response.payload!.user;
           if (dataUser.avatar == null) {
