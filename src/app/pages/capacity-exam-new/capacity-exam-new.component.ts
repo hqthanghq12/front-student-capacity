@@ -4,14 +4,15 @@ import {RoundService} from 'src/app/services/round.service';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {map, switchMap,forkJoin } from 'rxjs';
+import {map, switchMap, forkJoin} from 'rxjs';
 import {Round} from 'src/app/models/round.model';
 import {MatDialog} from '@angular/material/dialog';
 import {UserService} from 'src/app/services/user.service';
-import { Playtopic } from 'src/app/models/playtopic.model';
-import { PlaytopicServiceService } from 'src/app/services/playtopic-service.service';
-import { ResultCapacityService } from 'src/app/services/result-capacity.service';
-import { MathContent } from 'src/app/math/math-content';
+import {Playtopic} from 'src/app/models/playtopic.model';
+import {PlaytopicServiceService} from 'src/app/services/playtopic-service.service';
+import {ResultCapacityService} from 'src/app/services/result-capacity.service';
+import {MathContent} from 'src/app/math/math-content';
+
 @Component({
   selector: 'app-capacity-exam-new',
   templateUrl: './capacity-exam-new.component.html',
@@ -20,10 +21,10 @@ import { MathContent } from 'src/app/math/math-content';
 export class CapacityExamNewComponent implements OnInit {
 
   @ViewChildren("questions") questions: QueryList<ElementRef>;
-  Exam : any;
+  Exam: any;
   formAnswers!: FormGroup;
   data: any;
-  idExam : number;
+  idExam: number;
   fakeQuestionData!: any;
   checkUserExam = false;
 
@@ -32,8 +33,9 @@ export class CapacityExamNewComponent implements OnInit {
   round_id: number;
   isTakingExam = false;
   roundDetail!: Round;
-  DataPoetry : any;
-  statusExam : boolean= false;
+  DataPoetry: any;
+  DataPlayTopic: any;
+  statusExam: boolean = false;
   isFetchingRound = false;
   countDownTimeExam: { minutes: number | string, seconds: number | string } = {
     minutes: "00",
@@ -44,51 +46,57 @@ export class CapacityExamNewComponent implements OnInit {
 
   constructor(
     private roundService: RoundService,
-    private resultExam : ResultCapacityService,
+    private resultExam: ResultCapacityService,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private userService: UserService,
     private toast: NgToastService,
     private router: Router,
-    private PlaytopicServiceService : PlaytopicServiceService,
+    private PlaytopicServiceService: PlaytopicServiceService,
   ) {
-  
+
   }
 
   ngOnInit(): void {
     this.isFetchingRound = true;
     this.route.params.subscribe(params => {
-      const {id_user,id_poetry,id_campus,id_subject} =  params;
-      this.PlaytopicServiceService.getAllTopics(id_user,id_poetry,id_campus,id_subject).subscribe(resExam => {
-        
-        if(Object.keys(resExam.payload).length > 0){
-            this.Exam = resExam.payload
-            this.idExam = this.Exam.id_exam;
-            this.statusExam = true;
-            forkJoin([
-              this.resultExam.ResultExam(id_user,this.Exam.id_exam),
-              this.roundService.getExamsWhereId(this.Exam.id_exam),
-              // this.roundService.getpoetryOnesWhereId(id_poetry)
-            ]).subscribe(([resEXam,resExams ]) => {
-              // resPoetry
-              if(resEXam.payload == null){
-                // console.log(resEXam);
-                this.isFetchingRound = false;
-                this.checkUserExam = true;
-              }
-              if (resExams.status) {
-                this.isFetchingRound = false;
-                this.roundDetail = resExams.payload;
-                this.roundDetail.start_time = new Date("2022-06-25 15:25:54");
-                this.round_id = resExams.payload.id;
-             
-              }
-              // this.DataPoetry = resPoetry.payload;
-              // console.log(resPoetry.payload);
-              
-              // console.log(this.DataPoetry);
-            });
-          }
+      const {id_user, id_poetry, id_campus, id_subject} = params;
+      this.PlaytopicServiceService.getAllTopics(id_user, id_poetry, id_campus, id_subject).subscribe(resExam => {
+
+        if (Object.keys(resExam.payload).length > 0) {
+          this.DataPlayTopic = resExam.payload;
+          this.DataPlayTopic.time_type_exam = 0;
+          this.Exam = resExam.payload
+          console.log(this.DataPlayTopic);
+          this.idExam = this.Exam.id;
+          this.statusExam = true;
+          forkJoin([
+            this.resultExam.ResultExam(id_user, this.Exam.id),
+            // this.roundService.getExamsWhereId(this.Exam.id),
+            // this.roundService.getpoetryOnesWhereId(id_poetry)
+          // ]).subscribe(([resEXam, resExams]) => {
+          ]).subscribe(([resEXam]) => {
+            // resPoetry
+            if (resEXam.payload == null) {
+              // console.log(resEXam);
+              this.isFetchingRound = false;
+              this.checkUserExam = true;
+            }
+            // if (resExams.status) {
+              this.isFetchingRound = false;
+              // this.roundDetail = resExams.payload;
+              this.roundDetail = this.DataPlayTopic;
+              this.roundDetail.start_time = new Date("2022-06-25 15:25:54");
+              // this.round_id = resExams.payload.id;
+              this.round_id = this.roundDetail.id;
+
+            // }
+            // this.DataPoetry = resPoetry.payload;
+            // console.log(resPoetry.payload);
+
+            // console.log(this.DataPoetry);
+          });
+        }
       })
     })
   }
@@ -144,42 +152,42 @@ export class CapacityExamNewComponent implements OnInit {
           this.toast.warning({summary: "Chưa đến thời gian làm bài"});
           return;
         }
-        
-        
+
+
         // this.roundService.getInfoCapacityExam(this.Exam.id_exam).subscribe(res => {
         //   if (res.status) {
         //     console.log(res);
         //     if (res.status) {
         //       this.data = res.payload;
-  
+
         //       this.isTakingExam = true;
-  
+
         //       this.fakeQuestionData = this.data.questions;
         //       this.createFormControl();
         //       const durationExam = this.roundDetail.time_type_exam == 1 ? (this.data.time * 60 * 60) : this.data.time * 60;
         //       console.log(res.payload);
-              
+
         //       this.handleStartExam(durationExam, this.data.created_at);
         //       console.log(res.payload);
-  
+
         //     }
         //   }
         // })
 
         // fake api tạo bản nháp
         console.log(this.idExam);
-        
+
         this.roundService.getInfoCapacityExam(this.idExam).subscribe(res => {
           // console.log(res);
           if (res.status) {
             this.data = res.payload;
-
+            let questionsOrder = JSON.parse(this.data.questions_order);
             this.isTakingExam = true;
-            this.fakeQuestionData = this.data.questions;
+            this.fakeQuestionData = questionsOrder.map((id: any) => this.data.questions.find((q: { id: any; }) => q.id === id));
             this.createFormControl();
             const durationExam = this.roundDetail.time_type_exam == 1 ? (this.data.time * 60 * 60) : this.data.time * 60;
             const regex = /\[anh\d*\]/g;
-         
+
             console.log(this.data);
             // for (const question of this.data.questions) {
             //   const result = question.content.match(regex);
@@ -195,9 +203,9 @@ export class CapacityExamNewComponent implements OnInit {
             //     console.log("Không tìm thấy chuỗi chứa '[anh]'");
             //   }
             // }
-            
-            this.handleStartExam(durationExam, this.data.created_at);
-           
+
+            this.handleStartExam(durationExam);
+
 
           }
         });
@@ -245,7 +253,7 @@ export class CapacityExamNewComponent implements OnInit {
 
       confirmSubmitExam.afterClosed().subscribe(result => {
         console.log(result);
-        
+
         // xác nhận nộp bài
         if (result === "true") {
           // this.openDialogSubmitExam();
@@ -328,7 +336,7 @@ export class CapacityExamNewComponent implements OnInit {
   }
 
   // bắt đầu làm bài
-  handleStartExam(duration: number, timeStart: any) {
+  handleStartExam(duration: number) {
     // tính thời gian làm bài ban đầu
     const minutesExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) / 60);
     const secondsExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) % 60);
@@ -410,7 +418,7 @@ export class CapacityExamNewComponent implements OnInit {
   getResultExam() {
     const data = this.getAnswersData();
     return {
-      exam_id: this.data.id,
+      playtopic_id: this.data.id,
       data,
     }
   }
@@ -421,25 +429,25 @@ export class CapacityExamNewComponent implements OnInit {
     this.roundService.submitExam(this.getResultExam()).subscribe(res => {
       console.log(res);
       this.dialog.closeAll();
-     
-       this.route.params.subscribe(params => {
-      const  {id_user,id_poetry,id_campus,id_subject,id_semeter} =  params;
-      if(res.status){
-        this.dialog.open(DialogConfirmComponent, {
-          width: '500px',
-          disableClose: true,
-          data: {
-            description: "Nộp bài thành công",
-            isNotShowBtn: false,
-            title: "Bấm ok để hoàn tác quá trình nộp bài",
-            isShowLoading: false,
-          }
-        })
-      this.router.navigate(['/ca-thi', id_semeter]);
-      }
-     
-      
-    })
+
+      this.route.params.subscribe(params => {
+        const {id_user, id_poetry, id_campus, id_subject, id_semeter} = params;
+        if (res.status) {
+          this.dialog.open(DialogConfirmComponent, {
+            width: '500px',
+            disableClose: true,
+            data: {
+              description: "Nộp bài thành công",
+              isNotShowBtn: false,
+              title: "Bấm ok để hoàn tác quá trình nộp bài",
+              isShowLoading: false,
+            }
+          })
+          this.router.navigate(['/ca-thi', id_semeter]);
+        }
+
+
+      })
 
     })
   }

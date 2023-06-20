@@ -50,6 +50,7 @@ const routes: Routes = [
       //   path: "test-nang-luc/bai-thi/:id_user/:id_poetry/:id_campus/:id_subject",
       //   component: TopicExamComponent,
       // },
+
       {
         path: "test-nang-luc/vao-thi/:id_user/:id_poetry/:id_campus/:id_subject/:id_semeter",
         component: CapacityExamNewComponent,
