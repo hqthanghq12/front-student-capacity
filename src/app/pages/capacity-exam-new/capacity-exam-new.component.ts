@@ -184,6 +184,7 @@ export class CapacityExamNewComponent implements OnInit {
             let questionsOrder = JSON.parse(this.data.questions_order);
             this.isTakingExam = true;
             this.fakeQuestionData = questionsOrder.map((id: any) => this.data.questions.find((q: { id: any; }) => q.id === id));
+            console.log(this.fakeQuestionData);
             this.createFormControl();
             const durationExam = this.roundDetail.time_type_exam == 1 ? (this.data.time * 60 * 60) : this.data.time * 60;
             const regex = /\[anh\d*\]/g;

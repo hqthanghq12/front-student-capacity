@@ -18,7 +18,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: HomeComponent,
+        // component: HomeComponent,
+        component: TestCapacityComponent,
       },
       {
         path: 'thong-tin',
