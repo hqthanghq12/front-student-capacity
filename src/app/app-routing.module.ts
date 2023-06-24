@@ -17,6 +17,10 @@ const routes: Routes = [
     component: HomeLayoutComponent,
     children: [
       {
+        path: 'trang-chu',
+        component: HomeComponent,
+      },
+      {
         path: '',
         // component: HomeComponent,
         component: TestCapacityComponent,

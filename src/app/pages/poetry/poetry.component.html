@@ -121,7 +121,7 @@
                       <a *ngIf="round.is_in_time && !round.have_done"
                          [routerLink]="['/test-nang-luc/vao-thi', user.id, round.id,user.campus.id,round.id_block_subject,idPoetry]"
                          class="btn btn-register capacity__test-detail-btn">Xem đề thi</a>
-                      <p *ngIf="!round.is_in_time" class="btn btn-register capacity__test-detail-btn">Bạn đang không
+                      <p *ngIf="!round.is_in_time && !round.have_done" class="btn btn-register capacity__test-detail-btn">Bạn đang không
                         trong khoảng thời gian được phép làm bài</p>
                       <p *ngIf="round.have_done" class="btn btn-register capacity__test-detail-btn">Bạn đã làm bài thi
                         này rồi</p>
@@ -129,7 +129,7 @@
                   </div>
                 </li>
 
-                <li *ngIf="!listpoetry" style="text-align: center;padding: 20px 0;">Chưa có ca thi nào!</li>
+                <li *ngIf="!listpoetry" style="text-align: center;padding: 20px 0;">Bạn không có ca thi nào trong ngày hôm nay!</li>
               </ul>
 
               <!-- skeleton -->
@@ -164,7 +164,7 @@
     <div class="container my-4" #templateName>
       <section class="capacity__exam-description text-center">
         <h2 class="text-center tw-p-20 capacity__exam-description-title" *ngIf="!isFetchingCapacity">
-          Chưa có ca thi nào
+          Bạn chưa có ca thi nào trong ngày
         </h2>
       </section>
 

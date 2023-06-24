@@ -69,7 +69,8 @@ export class CapacityExamNewComponent implements OnInit {
           this.Exam = resExam.payload
           console.log(this.DataPlayTopic);
           this.idExam = this.Exam.id;
-          this.statusExam = true;
+          console.log(this.Exam.is_in_time && !this.Exam.have_done);
+          this.statusExam = (this.Exam.is_in_time && !this.Exam.have_done);
           forkJoin([
             this.resultExam.ResultExam(id_user, this.Exam.id),
             // this.roundService.getExamsWhereId(this.Exam.id),
@@ -77,7 +78,8 @@ export class CapacityExamNewComponent implements OnInit {
           // ]).subscribe(([resEXam, resExams]) => {
           ]).subscribe(([resEXam]) => {
             // resPoetry
-            if (resEXam.payload == null) {
+            // console.log(resEXam.payload.status != 0)
+            if (resEXam.payload == null || resEXam.payload.status == 0) {
               // console.log(resEXam);
               this.isFetchingRound = false;
               this.checkUserExam = true;
@@ -339,8 +341,10 @@ export class CapacityExamNewComponent implements OnInit {
   // bắt đầu làm bài
   handleStartExam(duration: number) {
     // tính thời gian làm bài ban đầu
-    const minutesExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) / 60);
-    const secondsExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) % 60);
+    // const minutesExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) / 60);
+    // const secondsExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) % 60);
+    const minutesExam = Math.floor(duration / 60);
+    const secondsExam = duration % 60;
     // console.log(minutesExam, secondsExam);
     this.countDownTimeExam.minutes = minutesExam;
     this.countDownTimeExam.seconds = secondsExam;
@@ -385,10 +389,12 @@ export class CapacityExamNewComponent implements OnInit {
           }
         })
       } else {
-        const minutes: string | number = Math.floor((distance % (60 * 60 * 1000)) / (60 * 1000));
+        // const minutes: string | number = Math.floor((distance % (60 * 60 * 1000)) / (60 * 1000));
+        const minutes: string | number = Math.floor((distance / 1000) / 60);
         this.countDownTimeExam.minutes = minutes < 10 ? `0${minutes}` : minutes;
 
-        const seconds: number | string = Math.floor((distance % (60 * 1000)) / 1000);
+        // const seconds: number | string = Math.floor((distance % (60 * 1000)) / 1000);
+        const seconds: number | string = Math.floor((distance / 1000) % 60);
         this.countDownTimeExam.seconds = seconds < 10 ? `0${seconds}` : seconds;
 
         // thông báo sắp hết giờ
@@ -436,11 +442,11 @@ export class CapacityExamNewComponent implements OnInit {
         if (res.status) {
           this.dialog.open(DialogConfirmComponent, {
             width: '500px',
-            disableClose: true,
+            disableClose: false,
             data: {
-              description: "Nộp bài thành công",
-              isNotShowBtn: false,
-              title: "Bấm ok để hoàn tác quá trình nộp bài",
+              title: "Nộp bài thành công",
+              description: 'Bạn đã nộp bài thành công, ấn "Ok" hoặc ngoài cửa sổ thông báo để tắt thông báo này',
+              isNotShowBtnCancel: true,
               isShowLoading: false,
             }
           })
