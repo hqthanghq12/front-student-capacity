@@ -87,6 +87,7 @@ export class LoginComponent implements OnInit {
           token: data.authToken,
           campus_code: this.loginForm.value.campus_code,
         }
+       console.log(data);
        
         this.statusLogin = true;
         this.toast.warning({summary: 'Đang tiến hành đăng nhập', duration: 10000});
