@@ -37,7 +37,9 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       campus_code: ['', Validators.required],
       accountEmail : ['', Validators.required],
+    
     });
+ 
   }
 
   ngOnInit(): void {
@@ -57,9 +59,10 @@ export class LoginComponent implements OnInit {
       this.statusLogin = false;
       return;
     }
+
     let dataSignIn = {
       campus_code: this.loginForm.value.campus_code,
-      email_user : this.loginForm.value.accountEmail
+       email_user : this.loginForm.value.accountEmail
     }
 
     this.statusLogin = true;
@@ -83,10 +86,13 @@ export class LoginComponent implements OnInit {
     //       token: data.authToken,
     //       campus_code: this.loginForm.value.campus_code,
     //     }
+       
     //     this.statusLogin = true;
     //     this.toast.warning({summary: 'Đang tiến hành đăng nhập', duration: 10000});
     //     this.userService.login(dataSignIn)
     //       .subscribe(status => {
+    //         // console.log(status);
+            
     //         this.statusLogin = false;
     //         if (status == true) {
               

@@ -79,7 +79,7 @@ export class UserService {
           this.userSubject.next(response.payload.user);
           this.jwtToken.next(response.payload.token);
         }
-
+        
         return response.status;
       }));
   }
