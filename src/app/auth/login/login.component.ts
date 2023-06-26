@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
   c?: boolean = true;
   listCampus: Campus[];
   loginForm: FormGroup;
-  loginFormFake: FormGroup;
   statusLogin: boolean = false;
   alert = {
     type: 'danger',
@@ -35,17 +34,9 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
   ) {
     this.getListCampus();
-    // accountEmail : ['', Validators.required],
-  
     this.loginForm = this.formBuilder.group({
       campus_code: ['', Validators.required],
     });
-
-    this.loginFormFake = this.formBuilder.group({
-      campus_code: ['', Validators.required],
-      accountEmail : ['', Validators.required],
-    });
- 
   }
 
   ngOnInit(): void {
@@ -65,27 +56,34 @@ export class LoginComponent implements OnInit {
       this.statusLogin = false;
       return;
     }
-
     let dataSignIn = {
       campus_code: this.loginForm.value.campus_code,
-
     }
 
-    
+    this.statusLogin = true;
+    // this.userService.fakeLogin(dataSignIn)
+    //   .subscribe(status => {
+        
+    //     this.statusLogin = false;
+    //     if (status == true) {
+    //       setTimeout(() => {
+    //         this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
+    //         this.router.navigate(['/']);
+    //       }, 1000)
+    //     } else {
+    //       this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
+    //     }
+    //   })
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
       .then(data => {
         let dataSignIn = {
           token: data.authToken,
           campus_code: this.loginForm.value.campus_code,
         }
-       console.log(data);
-       
         this.statusLogin = true;
         this.toast.warning({summary: 'Đang tiến hành đăng nhập', duration: 10000});
         this.userService.login(dataSignIn)
           .subscribe(status => {
-            // console.log(status);
-            
             this.statusLogin = false;
             if (status == true) {
               
@@ -98,35 +96,6 @@ export class LoginComponent implements OnInit {
             }
           })
       });
-  }
-
-  loginFake(): void {
-    if (!this.loginForm.value.campus_code) {
-      this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
-      this.statusLogin = false;
-      return;
-    }
-
-    let datafake = {
-      campus_code: this.loginForm.value.campus_code,
-    email_user : this.loginForm.value.accountEmail
-    }
-
-    this.statusLogin = true;
-    this.userService.fakeLogin(datafake)
-      .subscribe(status => {
-        // console.log(status);
-        
-        this.statusLogin = false;
-        if (status == true) {
-          setTimeout(() => {
-            this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
-            this.router.navigate(['/']);
-          }, 1000)
-        } else {
-          this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
-        }
-      })
   }
 
 
