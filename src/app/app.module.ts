@@ -59,6 +59,10 @@ import { ReplaceContentPipe } from './replace-content.pipe';
 import { MathjaxDirective } from './directive/mathjax.directive';
 import { RenderMathDirective } from './directive/render-math.directive';
 import {MathModule} from './math/math.module';
+const googleLoginOptions = {
+  scope: 'profile email',
+  plugin_name:'login' //you can use any name here
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -116,7 +120,7 @@ import {MathModule} from './math/math.module';
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(environment.GG_CLIENT_ID),
+            provider: new GoogleLoginProvider(environment.GG_CLIENT_ID,googleLoginOptions ),
           },
         ],
       } as SocialAuthServiceConfig,
