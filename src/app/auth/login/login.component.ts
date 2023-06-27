@@ -67,45 +67,45 @@ export class LoginComponent implements OnInit {
     }
 
     this.statusLogin = true;
-    this.userService.fakeLogin(dataSignIn)
-      .subscribe(status => {
-        // console.log(status);
+    // this.userService.fakeLogin(dataSignIn)
+    //   .subscribe(status => {
+    //     // console.log(status);
         
-        this.statusLogin = false;
-        if (status == true) {
-          setTimeout(() => {
-            this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
-            this.router.navigate(['/']);
-          }, 1000)
-        } else {
-          this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
-        }
-      })
-    // this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
-    //   .then(data => {
-    //     let dataSignIn = {
-    //       token: data.authToken,
-    //       campus_code: this.loginForm.value.campus_code,
+    //     this.statusLogin = false;
+    //     if (status == true) {
+    //       setTimeout(() => {
+    //         this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
+    //         this.router.navigate(['/']);
+    //       }, 1000)
+    //     } else {
+    //       this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
     //     }
+    //   })
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+      .then(data => {
+        let dataSignIn = {
+          token: data.authToken,
+          campus_code: this.loginForm.value.campus_code,
+        }
        
-    //     this.statusLogin = true;
-    //     this.toast.warning({summary: 'Đang tiến hành đăng nhập', duration: 10000});
-    //     this.userService.login(dataSignIn)
-    //       .subscribe(status => {
-    //         // console.log(status);
+        this.statusLogin = true;
+        this.toast.warning({summary: 'Đang tiến hành đăng nhập', duration: 10000});
+        this.userService.login(dataSignIn)
+          .subscribe(status => {
+            // console.log(status);
             
-    //         this.statusLogin = false;
-    //         if (status == true) {
+            this.statusLogin = false;
+            if (status == true) {
               
-    //           setTimeout(() => {
-    //             this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
-    //             this.router.navigate(['/']);
-    //           }, 1000)
-    //         } else {
-    //           this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
-    //         }
-    //       })
-    //   });
+              setTimeout(() => {
+                this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
+                this.router.navigate(['/']);
+              }, 1000)
+            } else {
+              this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
+            }
+          })
+      });
   }
 
 
