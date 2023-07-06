@@ -208,6 +208,7 @@ loginWithFake(): void {
 
   logOut(): void {
     this.socialAuthService.signOut();
+
   }
 
 

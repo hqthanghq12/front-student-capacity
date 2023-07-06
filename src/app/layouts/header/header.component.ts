@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { GetValueLocalService } from 'src/app/services/get-value-local.service';
-
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
   user: User;
   statusWindow: boolean = false;
   statusLogin: boolean = false;
-  constructor(private userInfo: GetValueLocalService) { }
+  constructor(private userInfo: GetValueLocalService, private router: Router,) { }
 
   ngOnInit(): void {
     this.user = this.userInfo.getValueLocalUser('user');
@@ -28,6 +28,7 @@ export class HeaderComponent implements OnInit {
 
   // LogOut
   logOut() {
+    this.router.navigate(['login']);
     localStorage.clear();
     this.statusLogin = false;
     this.ngOnInit();
