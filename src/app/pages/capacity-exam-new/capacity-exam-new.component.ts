@@ -2,7 +2,7 @@ import {DialogConfirmComponent} from './../../modal/dialog-confirm/dialog-confir
 import {NgToastService} from 'ng-angular-popup';
 import {RoundService} from 'src/app/services/round.service';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
-import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren,Inject,HostListener } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {map, switchMap, forkJoin} from 'rxjs';
 import {Round} from 'src/app/models/round.model';
@@ -12,6 +12,7 @@ import {Playtopic} from 'src/app/models/playtopic.model';
 import {PlaytopicServiceService} from 'src/app/services/playtopic-service.service';
 import {ResultCapacityService} from 'src/app/services/result-capacity.service';
 import {MathContent} from 'src/app/math/math-content';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-capacity-exam-new',
@@ -27,6 +28,8 @@ export class CapacityExamNewComponent implements OnInit {
   idExam: number;
   fakeQuestionData!: any;
   checkUserExam = false;
+  docElement: HTMLElement;
+  isFullScreen: boolean = false;
 
   // DS id câu hỏi đã trả lời
   questionListId: { questionId: number }[] = [];
@@ -53,11 +56,13 @@ export class CapacityExamNewComponent implements OnInit {
     private toast: NgToastService,
     private router: Router,
     private PlaytopicServiceService: PlaytopicServiceService,
+    @Inject(DOCUMENT) private document: Document
   ) {
 
   }
-
+  
   ngOnInit(): void {
+    this.docElement = document.documentElement;
     this.isFetchingRound = true;
     this.route.params.subscribe(params => {
       const {id_user, id_poetry, id_campus, id_subject} = params;
@@ -103,6 +108,27 @@ export class CapacityExamNewComponent implements OnInit {
     })
   }
 
+
+  
+  enterFullscreen() {
+    const docElmWithBrowsersFullScreenFunctions = document.documentElement as HTMLElement & {
+      mozRequestFullScreen(): Promise<void>;
+      webkitRequestFullscreen(): Promise<void>;
+      msRequestFullscreen(): Promise<void>;
+    };
+    if (docElmWithBrowsersFullScreenFunctions.requestFullscreen) {
+      docElmWithBrowsersFullScreenFunctions.requestFullscreen();
+    } else if (docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen) { /* Firefox */
+      docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen();
+    } else if (docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen();
+    } else if (docElmWithBrowsersFullScreenFunctions.msRequestFullscreen) { /* IE/Edge */
+      docElmWithBrowsersFullScreenFunctions.msRequestFullscreen();
+    }
+  }
+
+  
+
   mathMl: MathContent = {
     mathml: `<math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
@@ -126,6 +152,7 @@ export class CapacityExamNewComponent implements OnInit {
 
   // làm bài
   handleTakeExam() {
+  
     const confimExamRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
       data: {
@@ -180,6 +207,7 @@ export class CapacityExamNewComponent implements OnInit {
         console.log(this.idExam);
 
         this.roundService.getInfoCapacityExam(this.idExam).subscribe(res => {
+          this.enterFullscreen();
           // console.log(res);
           if (res.status) {
             this.data = res.payload;
@@ -215,7 +243,7 @@ export class CapacityExamNewComponent implements OnInit {
       }
     })
   }
-
+ 
   // nộp bài
   handleSubmitExam() {
     // check làm thiếu câu hỏi
@@ -267,6 +295,7 @@ export class CapacityExamNewComponent implements OnInit {
   }
 
   getAnswersData() {
+   
     const answerFormData = this.formAnswers.value;
 
     // danh sách id câu hỏi và câu trả lời
