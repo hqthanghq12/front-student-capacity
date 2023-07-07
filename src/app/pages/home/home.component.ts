@@ -44,9 +44,9 @@ export class HomeComponent implements OnInit {
 
         this.configView.activityStrollView(elToShow);
 
-        this.configView.runStatisticHome(studentStatistic, 10);
-        this.configView.runStatisticHome(yearStatistic, 4000);
-        this.configView.runStatisticHome(passStatistic, 2000);
+        this.configView.runStatisticHome(studentStatistic, 500);
+        this.configView.runStatisticHome(yearStatistic, 40000);
+        this.configView.runStatisticHometime(passStatistic, 97.7);
 
     }
 
