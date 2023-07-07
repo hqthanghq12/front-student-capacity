@@ -17,6 +17,8 @@ export class BannerComponent implements OnInit {
     this.sliderService.getListSlider('home', '', '').subscribe(res => {
       if (res.status) {
         this.banner = res.payload;
+        console.log(res.payload);
+        
         this.banner ? this.bannerStatus = true : this.bannerStatus;
       }
     });

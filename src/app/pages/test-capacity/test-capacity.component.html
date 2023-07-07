@@ -1,4 +1,4 @@
-<div class="tw-bg-[#F8F8F8]">
+<div class="tw-bg-[#F8F8F8]"  *ngIf="statusUser;else templateUser">
   <div class="container py-4">
     <div class="">
       <div class="pb-4">
@@ -73,3 +73,16 @@
     </div>
   </div>
 </div>
+
+<ng-template #templateUser>
+  <div class="container my-4">
+    <section class="capacity__exam-description tw-p-10 text-center">
+      <h2 class="text-center capacity__exam-description-title">
+        Bạn chưa đăng nhập để làm bài thi
+      </h2>
+
+      <button class="btn btn-register text-center btn-base-type-bg" [routerLink]="['/login']">Đăng nhập</button>
+    </section>
+
+  </div>
+</ng-template>
