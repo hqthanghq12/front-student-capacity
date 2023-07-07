@@ -29,8 +29,13 @@ export class HeaderComponent implements OnInit {
   // LogOut
   logOut() {
     this.router.navigate(['trang-chu']);
-    localStorage.clear();
-    this.statusLogin = false;
-    this.ngOnInit();
+    setTimeout(() => {
+      localStorage.clear();
+      this.statusLogin = false;
+      this.ngOnInit();
+      window.location.reload()
+    },1000)
+   
+  
   }
 }
