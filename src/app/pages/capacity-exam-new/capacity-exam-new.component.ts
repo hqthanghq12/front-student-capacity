@@ -58,26 +58,13 @@
       private router: Router,
       private PlaytopicServiceService: PlaytopicServiceService,
       @Inject(DOCUMENT) private document: Document,
-      private pageStateService: PageStateServiceService,
-      private renderer: Renderer2, private el: ElementRef,
-      private elementStyleService: ElementStyleServiceService
     ) {
    
       
     }
-    ngAfterViewInit() {
-      const homeElement = this.el.nativeElement.querySelector('#home');
-      this.renderer.setStyle(homeElement, 'display', 'none');
-    }
-
-    // getHomeElementStyle(): string {
-    //   const isDisplayed = this.elementStyleService.getElementStyle('home');
-    //   return isDisplayed ? 'block' : 'none';
-    // }
     
     ngOnInit(): void {
       
-      localStorage.setItem('status',JSON.stringify(true));
       this.docElement = document.documentElement;
       this.isFetchingRound = true;
       this.route.params.subscribe(params => {
@@ -168,19 +155,19 @@
     }
 
    
-    totalScreen: number = 0;
+    // totalScreen: number = 0;
 
-    @HostListener('document:keydown', ['$event'])
-    handleKeyboardEvent(event: KeyboardEvent) {
-      if (event.keyCode === 122) { // F11
-        this.isFullScreen = true;
-        this.totalScreen++;
-      }
-      if (event.keyCode === 27) { // ESC
-        event.preventDefault();
-        console.log('Không thể bấm ESC');
-      }
-    }
+    // @HostListener('document:keydown', ['$event'])
+    // handleKeyboardEvent(event: KeyboardEvent) {
+    //   if (event.keyCode === 122) { // F11
+    //     this.isFullScreen = true;
+    //     this.totalScreen++;
+    //   }
+    //   if (event.keyCode === 27) { // ESC
+    //     event.preventDefault();
+    //     console.log('Không thể bấm ESC');
+    //   }
+    // }
  
 
     enterFullscreen() {
@@ -275,7 +262,7 @@
           // })
 
           // fake api tạo bản nháp
-          console.log(this.idExam);
+          // console.log(this.idExam);
 
           this.roundService.getInfoCapacityExam(this.idExam).subscribe(res => {
           
@@ -431,6 +418,8 @@
 
     // scroll khi click câu hỏi
     scrollToQuestion(indexQuestion: number) {
+      console.log(indexQuestion);
+      
       this.questions.forEach((questionRef, index) => {
         if (indexQuestion === index) {
           questionRef.nativeElement.scrollIntoView();
