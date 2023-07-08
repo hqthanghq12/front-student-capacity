@@ -35,7 +35,6 @@
 
     <!-- làm bài -->
     <!-- *ngIf="isFullScreen;else error" -->
-    <div  >
       <form (ngSubmit)="handleSubmitExam()" [formGroup]="formAnswers" *ngIf="isTakingExam">
         <div class="row">
           <div class="col col-12 col-md-3">
@@ -141,7 +140,6 @@
           </div>
         </div>
       </form>
-    </div>
     <!-- <ng-template #error>
       <div class="container my-4" #templateName>
         <section class="capacity__exam-description text-center">

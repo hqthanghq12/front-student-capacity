@@ -13,8 +13,6 @@
   import {ResultCapacityService} from 'src/app/services/result-capacity.service';
   import {MathContent} from 'src/app/math/math-content';
   import { DOCUMENT, Time } from '@angular/common';
-  import { PageStateServiceService } from 'src/app/services/page-state-service.service';
-  import { ElementStyleServiceService } from 'src/app/services/element-style-service.service';
   declare const MathJax: any;
   @Component({
     selector: 'app-capacity-exam-new',
@@ -418,11 +416,11 @@
 
     // scroll khi click câu hỏi
     scrollToQuestion(indexQuestion: number) {
-      console.log(indexQuestion);
-      
       this.questions.forEach((questionRef, index) => {
         if (indexQuestion === index) {
-          questionRef.nativeElement.scrollIntoView();
+          console.log('Đang phát triển');
+          // questionRef.nativeElement.scrollIntoView();
+          // window.HTMLElement.prototype.scrollIntoView();
         }
       })
     }
