@@ -60,6 +60,7 @@ import { MathjaxDirective } from './directive/mathjax.directive';
 import { RenderMathDirective } from './directive/render-math.directive';
 import {MathModule} from './math/math.module';
 import { DisableEventsDirective } from './Event/disable-events.directive';
+
 const googleLoginOptions = {
   scope: 'profile email',
   plugin_name:'login' //you can use any name here

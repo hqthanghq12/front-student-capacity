@@ -39,7 +39,8 @@ export class MathServiceImpl implements MathService {
         element.innerHTML  = math.mathml!;
       }
     }
-    // console.log(math);
+
+    
 
     MathJax.Hub.Queue(['Typeset', MathJax.Hub, element]);
     

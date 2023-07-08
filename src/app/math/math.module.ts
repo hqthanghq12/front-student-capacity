@@ -40,7 +40,7 @@ MathJax.Hub.Register.StartupHook('End', () => {
 
 
   public static forRoot(): ModuleWithProviders<MathModule> {
-    console.log(`for root`);
+    // console.log(`for root`);
     return {
       ngModule: MathModule,
       providers: [{ provide: MathServiceImpl, useClass: MathServiceImpl }]

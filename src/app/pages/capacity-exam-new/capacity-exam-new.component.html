@@ -116,11 +116,12 @@
   
           <div class="col col-12 col-md-9 question__content">
             <ul class="question__content-list">
-              <li class="question__content-item" *ngFor="let question of fakeQuestionData; let i = index" #questions>
+              <ng-container  class="question__content-item" *ngFor="let question of fakeQuestionData; let i = index" #questions>
                 <span class="question__content-item-num d-block">Câu {{ i + 1 }}:</span>
                 <!-- [appMath]="" -->
                 <!-- | replaceContent: question.images -->
-                <p   class="question__content-item-content" id="mathjax_id"   [appMath]="question.content | replaceContent: question.images "></p>
+                
+                <p   class="question__content-item-content" id="mathjax_id"   [appMath]="question.content | replaceContent: question.images"  ></p>
                 <ul class="answers">
                   <li class="answers__item" *ngFor="let answer of question.answers; let j = index"
                       (click)="handleChooseAnswer(question.id)">
@@ -133,7 +134,7 @@
                     </label>
                   </li>
                 </ul>
-              </li>
+              </ng-container>
             </ul>
           </div>
         </div>
@@ -143,7 +144,7 @@
       <div class="container my-4" #templateName>
         <section class="capacity__exam-description text-center">
           <h2 class="text-center capacity__exam-description-title">
-              Vui lòng bấm f11 để hiển thị câu hỏi
+              Vui lòng bấm f11 để tiếp tục 
           </h2>
   
         </section>

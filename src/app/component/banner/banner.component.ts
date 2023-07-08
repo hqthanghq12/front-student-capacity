@@ -22,5 +22,6 @@ export class BannerComponent implements OnInit {
         this.banner ? this.bannerStatus = true : this.bannerStatus;
       }
     });
+
   }
 }

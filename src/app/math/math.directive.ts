@@ -13,7 +13,6 @@ export class MathDirective implements OnInit, OnChanges, OnDestroy {
   @Input()
   public appMath: MathContent ;
   private readonly _el: HTMLElement;
-
   constructor(private service: MathServiceImpl,
               private el: ElementRef) {
     this._el = el.nativeElement as HTMLElement;
@@ -27,6 +26,8 @@ export class MathDirective implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.alive$)
       ).subscribe(res => {
         // this.appMath
+        // console.log(this.status);
+        
         this.service.render(this._el, this.appMath);
     });
   }

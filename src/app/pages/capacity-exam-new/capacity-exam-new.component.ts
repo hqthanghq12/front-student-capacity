@@ -2,7 +2,7 @@
   import {NgToastService} from 'ng-angular-popup';
   import {RoundService} from 'src/app/services/round.service';
   import {FormGroup, FormControl, Validators} from '@angular/forms';
-  import {Component, ElementRef, OnInit, QueryList, ViewChildren,Inject,HostListener } from '@angular/core';
+  import {Component,  Renderer2, ElementRef , OnInit, QueryList, ViewChildren,Inject,HostListener } from '@angular/core';
   import {ActivatedRoute, Router} from '@angular/router';
   import {map, switchMap, forkJoin} from 'rxjs';
   import {Round} from 'src/app/models/round.model';
@@ -12,8 +12,10 @@
   import {PlaytopicServiceService} from 'src/app/services/playtopic-service.service';
   import {ResultCapacityService} from 'src/app/services/result-capacity.service';
   import {MathContent} from 'src/app/math/math-content';
-  import { DOCUMENT } from '@angular/common';
-
+  import { DOCUMENT, Time } from '@angular/common';
+  import { PageStateServiceService } from 'src/app/services/page-state-service.service';
+  import { ElementStyleServiceService } from 'src/app/services/element-style-service.service';
+  declare const MathJax: any;
   @Component({
     selector: 'app-capacity-exam-new',
     templateUrl: './capacity-exam-new.component.html',
@@ -29,7 +31,7 @@
     fakeQuestionData!: any;
     checkUserExam = false;
     docElement: HTMLElement;
-
+    isExamPage: boolean;
     // DS id câu hỏi đã trả lời
     questionListId: { questionId: number }[] = [];
     round_id: number;
@@ -55,11 +57,22 @@
       private toast: NgToastService,
       private router: Router,
       private PlaytopicServiceService: PlaytopicServiceService,
-      @Inject(DOCUMENT) private document: Document
+      @Inject(DOCUMENT) private document: Document,
+      private pageStateService: PageStateServiceService,
+      private renderer: Renderer2, private el: ElementRef,
+      private elementStyleService: ElementStyleServiceService
     ) {
 
     }
+    ngAfterViewInit() {
+      const homeElement = this.el.nativeElement.querySelector('#home');
+      this.renderer.setStyle(homeElement, 'display', 'none');
+    }
 
+    getHomeElementStyle(): string {
+      const isDisplayed = this.elementStyleService.getElementStyle('home');
+      return isDisplayed ? 'block' : 'none';
+    }
     ngOnInit(): void {
       this.docElement = document.documentElement;
       this.isFetchingRound = true;
@@ -71,9 +84,9 @@
             this.DataPlayTopic = resExam.payload;
             this.DataPlayTopic.time_type_exam = 0;
             this.Exam = resExam.payload
-            console.log(this.DataPlayTopic);
+            // console.log(this.DataPlayTopic);
             this.idExam = this.Exam.id;
-            console.log(this.Exam.is_in_time && !this.Exam.have_done);
+            // console.log(this.Exam.is_in_time && !this.Exam.have_done);
             this.statusExam = (this.Exam.is_in_time && !this.Exam.have_done);
             forkJoin([
               this.resultExam.ResultExam(id_user, this.Exam.id),
@@ -105,48 +118,66 @@
           }
         })
       })
+
+      
+       
+      // document.addEventListener('keydown', (event) => {
+      
+      //   if (event.key === 'F11') {
+      //     this.isFullScreen == true;
+      //     // const query = matchMedia('all and (display-mode: fullscreen)');
+      //     // query.onchange = (e) => {
+      //     //   this.isFullScreen = query.matches;
+      //     // };
+      //   }
+        
+      // // //     // console.log(isFullScreen );
+          
+
+      // // //     // if(!query.matches){
+      // // //     //   console.log('abc1111');
+      // // //     //         event.preventDefault();
+      // // //     //    }
+      // // //     // document.onclick = (event) => {
+      // // //     //   if (document.fullscreenElement) {
+      // // //     //     document
+      // // //     //       .exitFullscreen()
+      // // //     //       .then(() => console.log("Document Exited from Full screen mode"))
+      // // //     //       .catch((err) => console.error(err));
+      // // //     //   } else {
+      // // //     //     document.documentElement.requestFullscreen();
+      // // //     //   }
+      // // //     // };
+      
+      // // //     // event.preventDefault();
+      // // //     // console.log(event);
+      // // //     // event.keyboard.lock(["Escape"]);
+      // // //     // console.log('Không thể bấm F11');
+      // // //   }
+
+      // // console.log(this.isFullScreen);
+   
+      // });
+
+    
+    
     }
 
+   
+    totalScreen: number = 0;
 
-     totalScreen:number = 0;
     @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
-   
-      if (event.keyCode === 122 && this.isFullScreen == false) {
-        console.log(event);
-    
+      if (event.keyCode === 122) { // F11
         this.isFullScreen = true;
-      }else {
-        event.preventDefault();
+        this.totalScreen++;
       }
-      if (event.keyCode === 27) {
+      if (event.keyCode === 27) { // ESC
         event.preventDefault();
         console.log('Không thể bấm ESC');
       }
-
-      }
-    
-    // enterFullscreen() {
-    //   const docElmWithBrowsersFullScreenFunctions = document.documentElement as HTMLElement & {
-    //     mozRequestFullScreen(): Promise<void>;
-    //     webkitRequestFullscreen(): Promise<void>;
-    //     msRequestFullscreen(): Promise<void>;
-    //   };
-
-  
-    //   if (docElmWithBrowsersFullScreenFunctions.requestFullscreen) {
-    //     docElmWithBrowsersFullScreenFunctions.requestFullscreen();
-    //   } else if (docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen) { /* Firefox */
-    //     docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen();
-    //   } else if (docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-    //     docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen();
-    //   } else if (docElmWithBrowsersFullScreenFunctions.msRequestFullscreen) { /* IE/Edge */
-    //     docElmWithBrowsersFullScreenFunctions.msRequestFullscreen();
-    //   }
-
-     
-  
-    // }
+    }
+ 
 
 
 
@@ -235,12 +266,12 @@
               let questionsOrder = JSON.parse(this.data.questions_order);
               this.isTakingExam = true;
               this.fakeQuestionData = questionsOrder.map((id: any) => this.data.questions.find((q: { id: any; }) => q.id === id));
-              console.log(this.fakeQuestionData);
+              // console.log(this.fakeQuestionData);
               this.createFormControl();
               const durationExam = this.roundDetail.time_type_exam == 1 ? (this.data.time * 60 * 60) : this.data.time * 60;
               const regex = /\[anh\d*\]/g;
 
-              console.log(this.data);
+              // console.log(this.data);
               // for (const question of this.data.questions) {
               //   const result = question.content.match(regex);
               //   if (result) {
@@ -390,6 +421,9 @@
 
     // bắt đầu làm bài
     handleStartExam(duration: number) {
+      // this.isDoingExam = true;
+      // console.log(this.isDoingExam );
+      
       // this.enterFullscreen();
       // tính thời gian làm bài ban đầu
       // const minutesExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) / 60);

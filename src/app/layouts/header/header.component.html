@@ -34,14 +34,14 @@
       </div>
     </div>
 
-    <a href="" class="img-header-box"><img class="" src="./../../../assets/img/logo.png" alt=""></a>
+    <a href="#!" (click)="preventDefault($event)" class="img-header-box"><img class="" src="./../../../assets/img/logo.png" alt=""></a>
     <div class="d-flex" id="menu_login-box">
       <ul class="nav menu_login-box d-flex align-items-center mr-auto home-nav pr-2">
-        <li class="nav-item active"><a class=" fw-bold text-decoration-none text-uppercase nav-link-item "
+        <li class="nav-item active" id="home" ><a class=" fw-bold text-decoration-none text-uppercase nav-link-item "
                                        [routerLink]="['/trang-chu']">Trang
           Chủ</a>
         </li>
-        <li class="nav-item active"><a class=" fw-bold nav-link-item  text-uppercase  text-decoration-none "
+        <li class="nav-item active"  #exam ><a class=" fw-bold nav-link-item  text-uppercase  text-decoration-none "
                                        [routerLink]="['/test-nang-luc']">Bài Thi</a></li>
         <!--                <li *ngIf="statusLogin == true"><i matBadge="4" matBadgePosition="after"-->
         <!--                        class="fas fa-bell header-icon-message  color-blue" matBadgeColor="warn"></i>-->
@@ -59,11 +59,9 @@
               <span routerLink="/thong-tin/ca-nhan">Thông tin tài khoản</span>
             </button>
             <button mat-menu-item>
-
               <span>Thành tích</span>
             </button>
             <button (click)="logOut()" mat-menu-item>
-
               <span>Đăng xuất</span>
             </button>
           </mat-menu>
