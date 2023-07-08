@@ -50,21 +50,24 @@
           <a routerLink="/login" class="text-decoration-none mb-2 btn-outline-login">Đăng nhập</a>
         </li>
         <li *ngIf="statusLogin == true">
+          
+          <div *ngIf="!isExamPage" >
+            <img *ngIf="user.avatar" mat-icon-button [matMenuTriggerFor]="menu" class="header-avatar-user"
+            [src]="user.avatar" alt="">
+       <mat-menu class="mt-2" #menu="matMenu">
+         <button mat-menu-item>
 
-          <img *ngIf="user.avatar" mat-icon-button [matMenuTriggerFor]="menu" class="header-avatar-user"
-               [src]="user.avatar" alt="">
-          <mat-menu class="mt-2" #menu="matMenu">
-            <button mat-menu-item>
-
-              <span routerLink="/thong-tin/ca-nhan">Thông tin tài khoản</span>
-            </button>
-            <button mat-menu-item>
-              <span>Thành tích</span>
-            </button>
-            <button (click)="logOut()" mat-menu-item>
-              <span>Đăng xuất</span>
-            </button>
-          </mat-menu>
+           <span routerLink="/thong-tin/ca-nhan">Thông tin tài khoản</span>
+         </button>
+         <button mat-menu-item>
+           <span>Thành tích</span>
+         </button>
+         <button (click)="logOut()" mat-menu-item>
+           <span>Đăng xuất</span>
+         </button>
+       </mat-menu>
+          </div>
+         
         </li>
       </ul>
     </div>

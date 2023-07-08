@@ -19,6 +19,9 @@ const routes: Routes = [
       {
         path: 'trang-chu',
         component: HomeComponent,
+        data  : {
+          status : true
+        }
       },
       {
         path: '',
@@ -42,6 +45,9 @@ const routes: Routes = [
       {
         path: "test-nang-luc/vao-thi/:capacity_id/bai-thi/:round_id",
         component: CapacityExamComponent,
+        data: {
+          isExamPage: false
+        }
       },
       {
         path: "test-nang-luc",
