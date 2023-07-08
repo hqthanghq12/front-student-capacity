@@ -4,10 +4,9 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class PageStateServiceService {
-  private isExamPageSubject = new BehaviorSubject<boolean>(false);
-  isExamPage$ = this.isExamPageSubject.asObservable();
-
-  setIsExamPage(isExamPage: boolean) {
-    this.isExamPageSubject.next(isExamPage);
+  getValueRole(nameLocal: string) {
+    let dataString: any;
+    dataString = localStorage.getItem(nameLocal);
+    return JSON.parse(dataString);
   }
 }

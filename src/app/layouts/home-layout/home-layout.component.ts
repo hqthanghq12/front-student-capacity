@@ -18,6 +18,7 @@ export class HomeLayoutComponent implements OnInit {
     user: User;
     statusWindow: boolean = false;
     statusLogin: boolean = false;
+
     constructor(private userInfo: GetValueLocalService, private configView: ConfigViewService) {
     }
 

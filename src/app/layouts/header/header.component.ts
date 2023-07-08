@@ -12,9 +12,13 @@ export class HeaderComponent implements OnInit {
   user: User;
   statusWindow: boolean = false;
   statusLogin: boolean = false;
-  isExamPage: boolean;
+  isExamPage: boolean ;
   constructor(private userInfo: GetValueLocalService, private router: Router,private pageStateService: PageStateServiceService,  private renderer: Renderer2, private el: ElementRef) { }
   ngOnInit(): void {
+    localStorage.setItem('status',JSON.stringify(false));
+    let status = JSON.parse(localStorage.getItem('status')!);
+    this.isExamPage = status;
+    
     this.user = this.userInfo.getValueLocalUser('user');
     if (this.user) {
       this.statusLogin = true;

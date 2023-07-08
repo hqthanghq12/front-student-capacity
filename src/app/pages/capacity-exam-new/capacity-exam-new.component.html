@@ -1,6 +1,7 @@
-
-<div *ngIf="checkUserExam;else checkUser">
-  <div class="container my-4" *ngIf="statusExam;else templateName">
+<!-- *ngIf="checkUserExam;else checkUser" -->
+<div >
+  <!-- *ngIf="statusExam;else templateName" -->
+  <div class="container my-4" >
     <div class="capacity__exam-heading" *ngIf="!isFetchingRound">
       <div class="capacity__exam-heading-inner d-flex align-items-center justify-content-center">
         <span class="capacity__exam-heading-line"></span>
@@ -33,7 +34,8 @@
     </section>
 
     <!-- làm bài -->
-    <div  *ngIf="isFullScreen;else error">
+    <!-- *ngIf="isFullScreen;else error" -->
+    <div  >
       <form (ngSubmit)="handleSubmitExam()" [formGroup]="formAnswers" *ngIf="isTakingExam">
         <div class="row">
           <div class="col col-12 col-md-3">
@@ -140,7 +142,7 @@
         </div>
       </form>
     </div>
-    <ng-template #error>
+    <!-- <ng-template #error>
       <div class="container my-4" #templateName>
         <section class="capacity__exam-description text-center">
           <h2 class="text-center capacity__exam-description-title">
@@ -149,10 +151,10 @@
   
         </section>
       </div>
-    </ng-template>
+    </ng-template> -->
 
   </div>
-  <ng-template #templateName>
+  <!-- <ng-template #templateName>
     <div class="container my-4" #templateName>
       <section class="capacity__exam-description text-center">
         <h2 class="text-center capacity__exam-description-title">
@@ -161,10 +163,10 @@
 
       </section>
     </div>
-  </ng-template>
+  </ng-template> -->
 </div>
 
-<ng-template #checkUser>
+<!-- <ng-template #checkUser>
   <div class="container my-4" >
     <section class="capacity__exam-description text-center">
       <h2 class="text-center capacity__exam-description-title">
@@ -173,4 +175,4 @@
 
     </section>
   </div>
-</ng-template>
+</ng-template> -->

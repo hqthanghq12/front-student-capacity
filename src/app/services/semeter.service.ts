@@ -13,7 +13,7 @@ export class SemeterService {
   constructor(private http: HttpClient) { }
 
   // List test năng lực
-  getAllSemeter(): Observable<ResponsePayload> {
-  return this.http.get<ResponsePayload>(`${environment.semeterListUrl}`);
+  getAllSemeter(codeCampus : number): Observable<ResponsePayload> {
+  return this.http.get<ResponsePayload>(`${environment.semeterListUrl}/${codeCampus}`);
 }
 }

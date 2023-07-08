@@ -5,6 +5,6 @@ export class User {
     name: string;
     email: string;
     avatar: string;
-
+    campus_id : number ;
     campus: Campus;
 }

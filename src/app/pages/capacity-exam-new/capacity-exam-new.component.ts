@@ -62,18 +62,22 @@
       private renderer: Renderer2, private el: ElementRef,
       private elementStyleService: ElementStyleServiceService
     ) {
-
+   
+      
     }
     ngAfterViewInit() {
       const homeElement = this.el.nativeElement.querySelector('#home');
       this.renderer.setStyle(homeElement, 'display', 'none');
     }
 
-    getHomeElementStyle(): string {
-      const isDisplayed = this.elementStyleService.getElementStyle('home');
-      return isDisplayed ? 'block' : 'none';
-    }
+    // getHomeElementStyle(): string {
+    //   const isDisplayed = this.elementStyleService.getElementStyle('home');
+    //   return isDisplayed ? 'block' : 'none';
+    // }
+    
     ngOnInit(): void {
+      
+      localStorage.setItem('status',JSON.stringify(true));
       this.docElement = document.documentElement;
       this.isFetchingRound = true;
       this.route.params.subscribe(params => {
@@ -179,7 +183,22 @@
     }
  
 
-
+    enterFullscreen() {
+      const docElmWithBrowsersFullScreenFunctions = document.documentElement as HTMLElement & {
+        mozRequestFullScreen(): Promise<void>;
+        webkitRequestFullscreen(): Promise<void>;
+        msRequestFullscreen(): Promise<void>;
+      };
+      if (docElmWithBrowsersFullScreenFunctions.requestFullscreen) {
+        docElmWithBrowsersFullScreenFunctions.requestFullscreen();
+      } else if (docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen) { /* Firefox */
+        docElmWithBrowsersFullScreenFunctions.mozRequestFullScreen();
+      } else if (docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        docElmWithBrowsersFullScreenFunctions.webkitRequestFullscreen();
+      } else if (docElmWithBrowsersFullScreenFunctions.msRequestFullscreen) { /* IE/Edge */
+        docElmWithBrowsersFullScreenFunctions.msRequestFullscreen();
+      }
+    }
 
     mathMl: MathContent = {
       mathml: `<math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -424,7 +443,7 @@
       // this.isDoingExam = true;
       // console.log(this.isDoingExam );
       
-      // this.enterFullscreen();
+      this.enterFullscreen();
       // tính thời gian làm bài ban đầu
       // const minutesExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) / 60);
       // const secondsExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) % 60);
