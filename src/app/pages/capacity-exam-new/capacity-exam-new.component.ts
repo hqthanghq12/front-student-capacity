@@ -29,7 +29,6 @@ export class CapacityExamNewComponent implements OnInit {
   fakeQuestionData!: any;
   checkUserExam = false;
   docElement: HTMLElement;
-  isFullScreen: boolean = false;
 
   // DS id câu hỏi đã trả lời
   questionListId: { questionId: number }[] = [];
@@ -46,7 +45,7 @@ export class CapacityExamNewComponent implements OnInit {
   }
   // thông báo sắp hết giờ
   isNotiExamTimeOut = false;
-
+  isFullScreen: boolean = false;
   constructor(
     private roundService: RoundService,
     private resultExam: ResultCapacityService,
@@ -109,6 +108,7 @@ export class CapacityExamNewComponent implements OnInit {
   }
 
 
+
   
   enterFullscreen() {
     const docElmWithBrowsersFullScreenFunctions = document.documentElement as HTMLElement & {
@@ -125,10 +125,18 @@ export class CapacityExamNewComponent implements OnInit {
     } else if (docElmWithBrowsersFullScreenFunctions.msRequestFullscreen) { /* IE/Edge */
       docElmWithBrowsersFullScreenFunctions.msRequestFullscreen();
     }
+
+    this.isFullScreen = true;
   }
 
-  
 
+  @HostListener('fullscreenchange')
+  handleFullscreenChange() {
+    this.isFullScreen = !!this.document.fullscreenElement;
+    if (!this.isFullScreen) {
+      this.enterFullscreen();
+    }
+  }
   mathMl: MathContent = {
     mathml: `<math xmlns="http://www.w3.org/1998/Math/MathML">
   <mrow>
