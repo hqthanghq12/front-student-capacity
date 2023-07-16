@@ -2,7 +2,7 @@
   import {NgToastService} from 'ng-angular-popup';
   import {RoundService} from 'src/app/services/round.service';
   import {FormGroup, FormControl, Validators} from '@angular/forms';
-  import {Component,  Renderer2, ElementRef , OnInit, QueryList, ViewChildren,Inject,HostListener } from '@angular/core';
+  import {Component,  Renderer2, ElementRef , OnInit, QueryList, ViewChildren,Inject,HostListener, OnDestroy } from '@angular/core';
   import {ActivatedRoute, Router} from '@angular/router';
   import {map, switchMap, forkJoin} from 'rxjs';
   import {Round} from 'src/app/models/round.model';
@@ -19,7 +19,7 @@
     templateUrl: './capacity-exam-new.component.html',
     styleUrls: ['./capacity-exam-new.component.css']
   })
-  export class CapacityExamNewComponent implements OnInit {
+  export class CapacityExamNewComponent implements OnInit,OnDestroy {
 
     @ViewChildren("questions") questions: QueryList<ElementRef>;
     Exam: any;
@@ -39,6 +39,12 @@
     DataPlayTopic: any;
     statusExam: boolean = false;
     isFetchingRound = false;
+      // trạng thái đang call api nộp bài
+  isSubmitingExam = false;
+  // trạng thái hết giờ làm bài
+  isTimeOut = false;
+     // kích thước màn hình
+  windowScreenSize!: { width: number; height: number };
     countDownTimeExam: { minutes: number | string, seconds: number | string } = {
       minutes: "00",
       seconds: "00"
@@ -55,7 +61,7 @@
       private toast: NgToastService,
       private router: Router,
       private PlaytopicServiceService: PlaytopicServiceService,
-      @Inject(DOCUMENT) private document: Document,
+      @Inject(DOCUMENT) private document: any,
     ) {
    
       
@@ -152,6 +158,10 @@
     
     }
 
+    ngOnDestroy(): void {
+      this.handleRemoveAllEvent();
+    }
+
    
     // totalScreen: number = 0;
 
@@ -221,6 +231,8 @@
     
       confimExamRef.afterClosed().subscribe(res => {
         if (res === "true") {
+          this.enterFullscreen();
+
           // check user logged
           const userLogged = this.userService.getUserValue();
           if (!userLogged.id) {
@@ -238,7 +250,7 @@
             return;
           }
 
-
+       
           // this.roundService.getInfoCapacityExam(this.Exam.id_exam).subscribe(res => {
           //   if (res.status) {
           //     console.log(res);
@@ -261,6 +273,50 @@
 
           // fake api tạo bản nháp
           // console.log(this.idExam);
+          setTimeout(() => {
+            // kích thước khi full màn hình
+            this.windowScreenSize = {
+              width: window.innerWidth,
+              height: window.innerHeight,
+            };
+      
+            // bắt sự kiện thay đổi kích thước màn hình (f11)
+            window.onresize = (e: any) => {
+              if (this.isTimeOut || this.isSubmitingExam) return;
+      
+              const currentWindowWidth = e.target.innerWidth;
+              const currentWindowHeight = e.target.innerHeight;
+      
+              const { width, height } = this.windowScreenSize;
+      
+              if (currentWindowWidth !== width || currentWindowHeight !== height) {
+                this.dialog.closeAll();
+      
+                const dialogFullscreen = this.dialog.open(DialogConfirmComponent, {
+                  width: "300px",
+                  disableClose: true,
+                  data: {
+                    isNotShowBtnCancel: true,
+                    title: "Cảnh báo",
+                    description: "Vui lòng bật full màn hình khi làm bài!",
+                  },
+                });
+      
+                dialogFullscreen.afterClosed().subscribe((result) => {
+                  result === "true" && this.enterFullscreen();
+                });
+              } else {
+                this.dialog.closeAll();
+              }
+            };
+      
+            // chặn f12, chặn copy
+            window.onkeydown = (e: any) => {
+              this.handleDisableKeydown(e);
+              this.handleDisableCopy(e);
+            };
+      
+          }, 100);
 
           this.roundService.getInfoCapacityExam(this.idExam).subscribe(res => {
           
@@ -322,6 +378,9 @@
           if (result === "true") {
             // this.openDialogSubmitExam();
             this.handleSubmitExamPost();
+            this.handleRemoveAllEvent();
+               // thoát toàn màn hình
+          this.closeFullscreen();
           }
         })
       } else {
@@ -345,9 +404,13 @@
           if (result === "true") {
             // this.openDialogSubmitExam();
             this.handleSubmitExamPost();
+            this.handleRemoveAllEvent();
+       // thoát toàn màn hình
+       this.closeFullscreen();
           }
         })
       }
+                 
     }
 
     getAnswersData() {
@@ -429,8 +492,7 @@
     handleStartExam(duration: number) {
       // this.isDoingExam = true;
       // console.log(this.isDoingExam );
-      
-      this.enterFullscreen();
+  
       // tính thời gian làm bài ban đầu
       // const minutesExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) / 60);
       // const secondsExam = Math.floor(((duration % (60 * 60 * 24)) % (60 * 60)) % 60);
@@ -550,6 +612,97 @@
         })
 
       })
+    }
+
+      // disable event
+  disabledEvent(e: Event) {
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    } else if (window.event) {
+      window.event.cancelBubble = true;
+    }
+    e.preventDefault();
+    return false;
+  }
+
+  // chặn f12
+  handleDisableKeydown(e: any) {
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+      this.disabledEvent(e);
+    }
+    // "J" key
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+      this.disabledEvent(e);
+    }
+
+    // "C" key
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 67) {
+      this.disabledEvent(e);
+    }
+
+    // "S" key + macOS
+    if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+      this.disabledEvent(e);
+    }
+    // "U" key
+    if (e.ctrlKey && e.keyCode == 85) {
+      this.disabledEvent(e);
+    }
+    // "F12" key
+    if (e.keyCode == 123) {
+      this.disabledEvent(e);
+    }
+    if (e.ctrlKey && (e.key == "p" || e.charCode == 16 || e.charCode == 112 || e.keyCode == 80)) {
+      e.cancelBubble = true;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }
+
+  // chặn f11
+  handleDisableF11Key(e: any) {
+    if (e.keyCode === 122) {
+      this.disabledEvent(e);
+    }
+  }
+
+  handleDisableESCKey(e: any) {
+    if (e.keyCode === 27) {
+      this.disabledEvent(e);
+    }
+  }
+
+  // chặn copy
+  handleDisableCopy(e: any) {
+    if (e.ctrlKey && e.keyCode === 67) {
+      this.disabledEvent(e);
+      navigator.clipboard.writeText("Thí sinh không được gian lận trong quá trình làm bài!");
+    }
+  };
+
+  // remove all event in page
+  handleRemoveAllEvent() {
+    window.onresize = () => {};
+    window.onkeydown = () => {};
+    window.oncontextmenu = () => {};
+  }
+
+    /* Close fullscreen */
+    closeFullscreen() {
+      if (this.document.exitFullscreen) {
+        this.document.exitFullscreen();
+      } else if (this.document.mozCancelFullScreen) {
+        /* Firefox */
+        this.document.mozCancelFullScreen();
+      } else if (this.document.webkitExitFullscreen) {
+        /* Chrome, Safari and Opera */
+        this.document.webkitExitFullscreen();
+      } else if (this.document.msExitFullscreen) {
+        /* IE/Edge */
+        this.document.msExitFullscreen();
+      }
+  
+      this.isFullScreen = false;
     }
 
   }
