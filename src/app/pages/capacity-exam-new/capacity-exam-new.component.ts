@@ -483,7 +483,7 @@
         if (indexQuestion === index) {
           console.log('Đang phát triển');
           // questionRef.nativeElement.scrollIntoView();
-          // window.HTMLElement.prototype.scrollIntoView();
+          questionRef.nativeElement.scrollIntoView({ behavior: "smooth" });
         }
       })
     }
