@@ -62,6 +62,7 @@
       private router: Router,
       private PlaytopicServiceService: PlaytopicServiceService,
       @Inject(DOCUMENT) private document: any,
+      private elementRef: ElementRef
     ) {
    
       
@@ -478,14 +479,21 @@
     }
 
     // scroll khi click câu hỏi
-    scrollToQuestion(indexQuestion: number) {
-      this.questions.forEach((questionRef, index) => {
-        if (indexQuestion === index) {
-          console.log('Đang phát triển');
-          // questionRef.nativeElement.scrollIntoView();
-          questionRef.nativeElement.scrollIntoView({ behavior: "smooth" });
-        }
-      })
+    // scrollToQuestion(indexQuestion: number) {
+    //   this.questions.forEach((questionRef, index) => {
+    //     if (indexQuestion === index) {
+    //       console.log('Đang phát triển');
+    //       // questionRef.nativeElement.scrollIntoView();
+    //       questionRef.nativeElement.scrollIntoView({ behavior: "smooth" });
+    //     }
+    //   })
+    // }
+
+    scrollToQuestion(questionIndex: number) {
+      const questionElement = this.elementRef.nativeElement.querySelector(`#question-${questionIndex}`);
+      if (questionElement) {
+        questionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     // bắt đầu làm bài

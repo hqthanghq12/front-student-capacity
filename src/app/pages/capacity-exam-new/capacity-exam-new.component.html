@@ -117,7 +117,7 @@
   
           <div class="col col-12 col-md-9 question__content">
             <ul class="question__content-list">
-              <ng-container  class="question__content-item" *ngFor="let question of fakeQuestionData; let i = index" #questions>
+              <div [id]="'question-' + i"  class="question__content-item" *ngFor="let question of fakeQuestionData; let i = index" #questions >
                 <span class="question__content-item-num d-block">Câu {{ i + 1 }}:</span>
                 <!-- [appMath]="" -->
                 <!-- | replaceContent: question.images -->
@@ -135,7 +135,7 @@
                     </label>
                   </li>
                 </ul>
-              </ng-container>
+              </div>
             </ul>
           </div>
         </div>
