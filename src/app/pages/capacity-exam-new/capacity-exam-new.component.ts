@@ -313,8 +313,8 @@
       
             // chặn f12, chặn copy
             window.onkeydown = (e: any) => {
-              // this.handleDisableKeydown(e);
-              // this.handleDisableCopy(e);
+              this.handleDisableKeydown(e);
+              this.handleDisableCopy(e);
             };
       
           }, 100);
