@@ -634,7 +634,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
       let today = new Date().getTime();
 
       let distance = futureDate - today;
-      console.log(distance);
+      // console.log(distance);
       if (distance < 0) {
         this.countDownTimeExam.minutes = "00";
         this.countDownTimeExam.seconds = "00";
