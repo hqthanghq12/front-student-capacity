@@ -61,6 +61,9 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
     minutes: "00",
     seconds: "00"
   }
+
+  timerId: any;
+
   // thông báo sắp hết giờ
   isNotiExamTimeOut = false;
   isFullScreen: boolean = false;
@@ -522,7 +525,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
   }
 
   // check câu hỏi đã làm
-  checkQuesAnswered(controlName: number|string) {
+  checkQuesAnswered(controlName: number | string) {
     let isAnswerd = false;
     const formValues = this.formAnswers.value;
     for (const item in formValues) {
@@ -604,6 +607,9 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
 
   // bắt đầu làm bài
   handleStartExam(duration: number) {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
     // this.isDoingExam = true;
     // console.log(this.isDoingExam );
 
@@ -620,20 +626,19 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
     let timeStartExam: any = new Date().getTime();
     // console.log(timeStartExam);
     const timeWillEndExam = new Date(timeStartExam + duration * 1000 + 1000);
-    // console.log(timeWillEndExam);
 
-    let timerId: any;
+    // let timerId: any;
     let futureDate = new Date(timeWillEndExam).getTime();
     // console.log(futureDate);
-    timerId = setInterval(() => {
+    this.timerId = setInterval(() => {
       let today = new Date().getTime();
 
       let distance = futureDate - today;
-
+      console.log(distance);
       if (distance < 0) {
         this.countDownTimeExam.minutes = "00";
         this.countDownTimeExam.seconds = "00";
-        clearInterval(timerId);
+        clearInterval(this.timerId);
 
         // thông báo nộp bài khi hết thời gian
         this.dialog.closeAll();
@@ -705,6 +710,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
     this.roundService.submitExam(this.getResultExam()).subscribe(res => {
       console.log(res);
       this.dialog.closeAll();
+      clearInterval(this.timerId);
 
       this.route.params.subscribe(params => {
         const {id_user, id_poetry, id_campus, id_subject, id_semeter} = params;
