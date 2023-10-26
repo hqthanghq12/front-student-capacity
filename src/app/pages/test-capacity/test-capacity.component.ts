@@ -39,14 +39,14 @@ export class TestCapacityComponent implements OnInit {
   getListTestCapacity() {
     const userLogged = this.userService.getUserValue();
     console.log(userLogged.campus_id);
-    
-    this.testCapacityService.getAllTestCapacity().subscribe(data => {
-      this.listCapacity = data.payload.data;
-    })
+
+    // this.testCapacityService.getAllTestCapacity().subscribe(data => {
+    //   this.listCapacity = data.payload.data;
+    // })
     this.semeterService.getAllSemeter(userLogged.campus_id).subscribe(data => {
       this.ListSemeter = data.payload;
       console.log(data.payload);
-      
+
     })
   }
 
