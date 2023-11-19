@@ -24,10 +24,14 @@ config.text = `
 MathJax.Hub.Config({
     skipStartupTypeset: true,
     tex: {
-      inlineMath: [['\\(', '\\)']],
+      inlineMath: [['$','$'], ['\\(', '\\)']],
       displayMath: [['\\[', '\\]']],
       processEscapes: true
-    }
+    },
+    tex2jax: {
+    inlineMath: [['$','$'], ['\\\\(','\\\\)']],
+    processEscapes: true
+  }
 });
 MathJax.Hub.Register.StartupHook('End', () => {
     window.hubReady.next();

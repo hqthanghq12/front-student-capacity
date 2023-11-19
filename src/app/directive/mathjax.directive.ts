@@ -8,7 +8,9 @@ export class MathjaxDirective {
 
   @Input('appMathJax') equation: string;
 
-  constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef) {
+    MathJax.Hub.Config ( {tex2jax: {inlineMath: [ ['$','$'], ['\\(','\\)']]}});
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['equation']) {

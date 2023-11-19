@@ -330,6 +330,9 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
             this.handleDisableKeydown(e);
             this.handleDisableCopy(e);
           };
+          window.onblur = (e: any) => {
+            this.handleSubmitExamPost();
+          }
 
         }, 100);
 

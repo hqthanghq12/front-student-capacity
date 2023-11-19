@@ -9,7 +9,9 @@ declare const MathJax: any;
 export class RenderMathDirective implements OnInit {
   @Input('appRenderMath') content: string;
 
-  constructor(private elementRef: ElementRef, private sanitizer: DomSanitizer) {}
+  constructor(private elementRef: ElementRef, private sanitizer: DomSanitizer) {
+    MathJax.Hub.Config ( {tex2jax: {inlineMath: [ ['$','$'], ['\\(','\\)']]}});
+  }
 
   ngOnInit() {
     this.renderMath();
