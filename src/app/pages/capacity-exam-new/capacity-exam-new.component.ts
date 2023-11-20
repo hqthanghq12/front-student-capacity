@@ -728,6 +728,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
               isShowLoading: false,
             }
           })
+          window.onblur = null;
           this.router.navigate(['/ca-thi', id_semeter]);
         }
 
