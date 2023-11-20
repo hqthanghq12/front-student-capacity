@@ -251,6 +251,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
         // check user logged
         const userLogged = this.userService.getUserValue();
         if (!userLogged.id) {
+          window.onblur = null;
           this.toast.warning({summary: "Vui lòng đăng nhập trước khi làm bài", duration: 3000});
           this.router.navigate(['/login']);
           return;
