@@ -123,7 +123,7 @@ const googleLoginOptions = {
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(environment.GG_CLIENT_ID,googleLoginOptions ),
+            provider: new GoogleLoginProvider(environment.GG_CLIENT_ID),
           },
         ],
       } as SocialAuthServiceConfig,
