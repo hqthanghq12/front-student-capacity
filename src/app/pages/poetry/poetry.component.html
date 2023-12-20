@@ -21,7 +21,7 @@
               <div *ngIf="!isFetchingCapacity">
 
                 <h1 class="capacity__info-name">
-                  <span>Ca thi của kì :</span> {{ nameSemeter }}
+                  <span>Ca thi của kỳ :</span> {{ nameSemeter }}
                 </h1>
 
                 <!-- <div class="capacity__info-desc">
@@ -96,7 +96,7 @@
                       </div>
 
                       <h2 class="capacity__test-name">{{ i + 1 }}. {{ round.name_subject }}
-                        -  {{ round.name_class }}</h2>
+                        -  {{ round.name_class }} | Thời gian: {{ round.start_time }} - {{ round.finish_time }}</h2>
                     </div>
 
                     <div class="collapse multi-collapse capacity__test-detail" [id]="'collapse-' + i">

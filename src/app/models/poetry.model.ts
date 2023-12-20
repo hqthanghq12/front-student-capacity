@@ -9,4 +9,6 @@ export class Poetry {
   name_subject: string;
   room_name: string;
   id_block_subject: number;
+  start_time?: string;
+  finish_time?: string;
 }
