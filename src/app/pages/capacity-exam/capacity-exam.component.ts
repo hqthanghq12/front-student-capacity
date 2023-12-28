@@ -1,7 +1,7 @@
 import {DialogConfirmComponent} from './../../modal/dialog-confirm/dialog-confirm.component';
 import {NgToastService} from 'ng-angular-popup';
 import {RoundService} from 'src/app/services/round.service';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {UntypedFormGroup, UntypedFormControl, Validators} from '@angular/forms';
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {map, switchMap} from 'rxjs';
@@ -17,7 +17,7 @@ import {UserService} from 'src/app/services/user.service';
 export class CapacityExamComponent implements OnInit {
 
   @ViewChildren("questions") questions: QueryList<ElementRef>;
-  formAnswers!: FormGroup;
+  formAnswers!: UntypedFormGroup;
   data: any;
   fakeQuestionData!: any;
   // DS id câu hỏi đã trả lời
@@ -179,13 +179,13 @@ export class CapacityExamComponent implements OnInit {
   }
 
   createFormControl() {
-    const ctrls: { [name: string]: FormControl } = {};
+    const ctrls: { [name: string]: UntypedFormControl } = {};
     this.fakeQuestionData.forEach((question: any, index: number) => {
       const fieldName = `question-${++index}-${question.id}-${question.type}`;
-      ctrls[fieldName] = new FormControl('', Validators.required)
+      ctrls[fieldName] = new UntypedFormControl('', Validators.required)
     })
 
-    this.formAnswers = new FormGroup(ctrls);
+    this.formAnswers = new UntypedFormGroup(ctrls);
   }
 
   // lấy danh sách câu hỏi chưa trả lời

@@ -6,7 +6,7 @@ import {UserService} from 'src/app/services/user.service';
 import {CampusService} from 'src/app/services/campus.service';
 import {NgToastService} from 'ng-angular-popup';
 import {Campus} from 'src/app/models/campus.model';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -17,8 +17,8 @@ export class LoginComponent implements OnInit {
   socialUser!: SocialUser;
   c?: boolean = true;
   listCampus: Campus[];
-  loginForm: FormGroup;
-  loginFake: FormGroup;
+  loginForm: UntypedFormGroup;
+  loginFake: UntypedFormGroup;
   statusLogin: boolean = false;
   alert = {
     type: 'danger',
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private configView: ConfigViewService,
     private toast: NgToastService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
   ) {
     this.getListCampus();
     

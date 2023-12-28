@@ -1,7 +1,7 @@
 import {DialogConfirmComponent} from './../../modal/dialog-confirm/dialog-confirm.component';
 import {NgToastService} from 'ng-angular-popup';
 import {RoundService} from 'src/app/services/round.service';
-import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
+import {UntypedFormGroup, UntypedFormControl, Validators, UntypedFormArray} from '@angular/forms';
 import {
   Component,
   Renderer2,
@@ -35,7 +35,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
 
   @ViewChildren("questions") questions: QueryList<ElementRef>;
   Exam: any;
-  formAnswers!: FormGroup;
+  formAnswers!: UntypedFormGroup;
   data: any;
   idExam: number;
   fakeQuestionData!: any;
@@ -487,17 +487,17 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
   }
 
   createFormControl() {
-    const ctrls: { [name: string]: FormControl | FormArray } = {};
+    const ctrls: { [name: string]: UntypedFormControl | UntypedFormArray } = {};
     this.fakeQuestionData.forEach((question: any, index: number) => {
       const fieldName = `question-${++index}-${question.id}-${question.type}`;
       if (question.type === 0) {
-        ctrls[fieldName] = new FormControl("", Validators.required);
+        ctrls[fieldName] = new UntypedFormControl("", Validators.required);
       } else if (question.type === 1) {
-        ctrls[fieldName] = new FormArray([], Validators.required);
+        ctrls[fieldName] = new UntypedFormArray([], Validators.required);
       }
     })
 
-    this.formAnswers = new FormGroup(ctrls);
+    this.formAnswers = new UntypedFormGroup(ctrls);
   }
 
   // lấy danh sách câu hỏi chưa trả lời
@@ -551,12 +551,12 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
 
   // xử lý đối với câu hỏi có nhiều đáp án
   onCheckChange(formControlName: string, event: any) {
-    const formArray: FormArray = this.formAnswers.get(formControlName) as FormArray;
+    const formArray: UntypedFormArray = this.formAnswers.get(formControlName) as UntypedFormArray;
 
     /* Selected */
     if (event.target.checked) {
       // Add a new control in the arrayForm
-      formArray.push(new FormControl(event.target.value));
+      formArray.push(new UntypedFormControl(event.target.value));
     } else {
       /* unselected */
       // find the unselected element
