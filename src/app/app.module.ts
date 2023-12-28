@@ -62,8 +62,8 @@ import {MathModule} from './math/math.module';
 import { DisableEventsDirective } from './Event/disable-events.directive';
 
 const googleLoginOptions = {
-  scope: 'profile email',
-  plugin_name:'login' //you can use any name here
+  scopes: 'profile email',
+  // plugin_name:'login' //you can use any name here
 };
 @NgModule({
   declarations: [
