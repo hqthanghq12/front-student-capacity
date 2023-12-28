@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
+import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from '@abacritt/angularx-social-login';
 import {environment} from 'src/environments/environment';
 import {LoginComponent} from './auth/login/login.component';
 import {HomeComponent} from './pages/home/home.component';
@@ -109,7 +109,7 @@ const googleLoginOptions = {
     BrowserAnimationsModule,
     FontAwesomeModule,
     SlickCarouselModule,
-    NgxSkeletonLoaderModule,
+    NgxSkeletonLoaderModule.forRoot(),
     MaterialModule,
     NgToastModule,
     NzSelectModule,
