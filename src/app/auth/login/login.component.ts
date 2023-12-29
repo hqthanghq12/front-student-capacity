@@ -34,16 +34,21 @@ export class LoginComponent implements OnInit {
     private toast: NgToastService,
     private formBuilder: UntypedFormBuilder,
   ) {
+    this.socialAuthService.authState.subscribe((user) => {
+      this.socialUser = user;
+      console.log(this.socialUser);
+      this.loginWithGoogle(this.socialUser.idToken)
+    });
     this.getListCampus();
 
     this.loginForm = this.formBuilder.group({
       campus_code: ['', Validators.required],
-      accountEmail : ['', Validators.required],
+      accountEmail: ['', Validators.required],
     });
 
     this.loginFake = this.formBuilder.group({
       campus_code: ['', Validators.required],
-        accountEmail : ['', Validators.required],
+      accountEmail: ['', Validators.required],
     });
 
   }
@@ -114,97 +119,55 @@ export class LoginComponent implements OnInit {
 //       });
 //   }
 
-  loginWithGoogle(): void {
-    // if (!this.loginForm.value.campus_code) {
-    //   this.toast.error({ summary: 'Không thể đăng nhập', duration: 5000 });
-    //   this.statusLogin = false;
-    //   return;
-    // }
 
-    // this.loginForm.value.campus_code
-    let dataSignIn = {
-      campus_code: '1',
-    };
+  loginWithGoogle(token: any): void {
 
     this.statusLogin = true;
-    this.socialAuthService
-      .signIn(GoogleLoginProvider.PROVIDER_ID)
-      .then((data) => {
         let dataSignIn = {
-          token: data.authToken,
+          token: token,
           campus_code: '1',
         };
 
 
-        this.toast.warning({ summary: 'Đang tiến hành đăng nhập', duration: 10000 });
+        this.toast.warning({summary: 'Đang tiến hành đăng nhập', duration: 10000});
         this.userService.login(dataSignIn).subscribe((status) => {
           this.statusLogin = false;
           if (status) {
             setTimeout(() => {
-              this.toast.success({ summary: 'Đăng nhập thành công', duration: 5000 });
+              this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
               this.router.navigate(['/']);
             }, 1000);
           } else {
-            this.toast.error({ summary: 'Không thể đăng nhập', duration: 5000 });
+            this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
           }
-        });
-      });
+        });;
   }
 
-
-//   loginWithFake(): void {
-//     if (!this.loginFake.value.campus_code) {
-//       this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
-//       this.statusLogin = false;
-//       return;
-//     }
-
-//     let dataFake = {
-//       campus_code: this.loginFake.value.campus_code,
-//  email_user : this.loginFake.value.accountEmail
-//     }
-
-//     this.statusLogin = true;
-//     this.userService.fakeLogin(dataFake)
-//       .subscribe(status => {
-//         // console.log(status);
-
-//         this.statusLogin = false;
-//         if (status == true) {
-//           setTimeout(() => {
-//             this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
-//             this.router.navigate(['/']);
-//           }, 1000)
-//         } else {
-//           this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
-//         }
-//       })
-//   }
-loginWithFake(): void {
-  if (!this.loginForm.value.campus_code) {
-    this.toast.error({ summary: 'Không thể đăng nhập', duration: 5000 });
-    this.statusLogin = false;
-    return;
-  }
-
-  let dataFake = {
-    campus_code: this.loginForm.value.campus_code,
-    email_user: this.loginForm.value.accountEmail,
-  };
-
-  this.statusLogin = true;
-  this.userService.fakeLogin(dataFake).subscribe((status) => {
-    this.statusLogin = false;
-    if (status) {
-      setTimeout(() => {
-        this.toast.success({ summary: 'Đăng nhập thành công', duration: 5000 });
-        this.router.navigate(['/']);
-      }, 1000);
-    } else {
-      this.toast.error({ summary: 'Không thể đăng nhập', duration: 5000 });
+  loginWithFake(): void {
+    if (!this.loginForm.value.campus_code) {
+      this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
+      this.statusLogin = false;
+      return;
     }
-  });
-}
+
+    let dataFake = {
+      campus_code: this.loginForm.value.campus_code,
+      email_user: this.loginForm.value.accountEmail,
+    };
+
+    this.statusLogin = true;
+    this.userService.fakeLogin(dataFake).subscribe((status) => {
+      this.statusLogin = false;
+      if (status) {
+        setTimeout(() => {
+          this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
+          this.router.navigate(['/']);
+        }, 1000);
+      } else {
+        this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
+      }
+    });
+  }
 
   logOut(): void {
     this.socialAuthService.signOut();
@@ -212,4 +175,5 @@ loginWithFake(): void {
   }
 
 
+  protected readonly event = event;
 }
