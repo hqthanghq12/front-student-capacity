@@ -376,6 +376,18 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
 
 
           }
+        }, error => {
+          this.dialog.open(DialogConfirmComponent, {
+            width: "350px",
+            data: {
+              title: "Lỗi",
+              description: "Đã có lỗi xảy ra, vui lòng thử lại sau!",
+              textCancel: "Thoát",
+              textOk: "Đồng ý"
+            }
+          });
+
+          return;
         });
       }
     })
