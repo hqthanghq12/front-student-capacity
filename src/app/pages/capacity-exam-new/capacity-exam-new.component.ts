@@ -62,6 +62,8 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
     seconds: "00"
   }
 
+  logs: any[] = [];
+
   timerId: any;
 
   // thông báo sắp hết giờ
@@ -246,7 +248,6 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
 
     confimExamRef.afterClosed().subscribe(res => {
       if (res === "true") {
-        this.enterFullscreen();
 
         // check user logged
         const userLogged = this.userService.getUserValue();
@@ -256,6 +257,8 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
           this.router.navigate(['/login']);
           return;
         }
+
+        this.enterFullscreen();
 
         // check thời gian thi
         const todayTime = new Date().getTime();
@@ -327,13 +330,14 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
           };
 
           // chặn f12, chặn copy
-          window.onkeydown = (e: any) => {
-            this.handleDisableKeydown(e);
-            this.handleDisableCopy(e);
-          };
-          window.onblur = (e: any) => {
-            this.handleSubmitExamPost();
-          }
+          // window.onkeydown = (e: any) => {
+          //   this.handleDisableKeydown(e);
+          //   this.handleDisableCopy(e);
+          // };
+          // window.onblur = (e: any) => {
+          //   console.log('blur');
+          //   this.handleSubmitExamPost();
+          // }
 
         }, 100);
 
@@ -344,7 +348,9 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
             this.data = res.payload;
             let questionsOrder = JSON.parse(this.data.questions_order);
             this.isTakingExam = true;
-            this.fakeQuestionData = questionsOrder.map((id: any) => this.data.questions.find((q: { id: any; }) => q.id === id));
+            this.fakeQuestionData = questionsOrder.map((id: any) => this.data.questions.find((q: {
+              id: any;
+            }) => q.id === id));
             // console.log(this.fakeQuestionData);
             this.createFormControl();
             const durationExam = this.roundDetail.time_type_exam == 1 ? (this.data.time * 60 * 60) : this.data.time * 60;
@@ -398,9 +404,6 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
         if (result === "true") {
           // this.openDialogSubmitExam();
           this.handleSubmitExamPost();
-          this.handleRemoveAllEvent();
-          // thoát toàn màn hình
-          this.closeFullscreen();
         }
       })
     } else {
@@ -424,9 +427,6 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
         if (result === "true") {
           // this.openDialogSubmitExam();
           this.handleSubmitExamPost();
-          this.handleRemoveAllEvent();
-          // thoát toàn màn hình
-          this.closeFullscreen();
         }
       })
     }
@@ -516,9 +516,13 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
   }
 
   // lưu các câu hỏi đã trả lời
-  handleChooseAnswer(questionId: number) {
+  handleChooseAnswer(questionId: number, answerId: number) {
     // console.log(this.questionListId);
     const exitsId = this.questionListId.some(item => item.questionId === questionId);
+
+    let msg = `Đã chọn đáp án ${answerId} của câu hỏi ${questionId}`;
+
+    this.logs.push(msg);
 
     // nếu trong chưa có questionId
     if (!exitsId) {
@@ -614,6 +618,16 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
     if (this.timerId) {
       clearInterval(this.timerId);
     }
+
+    // chặn f12, chặn copy
+    window.onkeydown = (e: any) => {
+      this.handleDisableKeydown(e);
+      this.handleDisableCopy(e);
+    };
+    window.onblur = (e: any) => {
+      this.handleSubmitExamPost();
+    }
+
     // this.isDoingExam = true;
     // console.log(this.isDoingExam );
 
@@ -703,6 +717,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
     return {
       playtopic_id: this.data.id,
       data,
+      logs: this.logs
     }
   }
 
@@ -712,9 +727,13 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
 
     console.log(this.getResultExam());
     this.roundService.submitExam(this.getResultExam()).subscribe(res => {
-      console.log(res);
-      this.dialog.closeAll();
       clearInterval(this.timerId);
+
+      this.handleRemoveAllEvent();
+      // thoát toàn màn hình
+      this.closeFullscreen();
+
+      this.dialog.closeAll();
 
       this.route.params.subscribe(params => {
         const {id_user, id_poetry, id_campus, id_subject, id_semeter} = params;
@@ -736,6 +755,26 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
 
       })
 
+    }, error => {
+      this.dialog.closeAll();
+      this.enterFullscreen();
+      this.dialog.open(DialogConfirmComponent, {
+        width: '500px',
+        disableClose: false,
+        data: {
+          title: "Nộp bài thất bại",
+          description: 'Có lỗi xảy ra trong quá trình nộp bài, vui lòng thử lại sau',
+          isNotShowBtnCancel: true,
+          isShowLoading: false,
+        }
+      });
+      window.onkeydown = (e: any) => {
+        this.handleDisableKeydown(e);
+        this.handleDisableCopy(e);
+      };
+      window.onblur = (e: any) => {
+        this.handleSubmitExamPost();
+      }
     })
   }
 

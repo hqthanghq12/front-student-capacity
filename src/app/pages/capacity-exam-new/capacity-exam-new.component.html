@@ -134,7 +134,7 @@
                 <!-- câu hỏi có 1 đáp án -->
                 <div *ngIf="question.type === 0">
                   <li class="answers__item" *ngFor="let answer of question.answers; let j = index"
-                      (click)="handleChooseAnswer(question.id)">
+                      (click)="handleChooseAnswer(question.id, answer.id)">
                     <input class="answers__input" type="radio" hidden [id]="'answer-' + answer.id"
                            [formControlName]="'question-' + (i + 1) + '-' + question.id + '-' + question.type"
                            [value]="answer.id">
@@ -149,7 +149,7 @@
                 <!-- câu hỏi có nhiều đáp án -->
                 <div *ngIf="question.type === 1">
                   <li class="answers__item border-square" *ngFor="let answer of question.answers; let j = index"
-                      (click)="handleChooseAnswer(question.id)">
+                      (click)="handleChooseAnswer(question.id, answer.id)">
                     <input
                       class="answers__input"
                       type="checkbox"
