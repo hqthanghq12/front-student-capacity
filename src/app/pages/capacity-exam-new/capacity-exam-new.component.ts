@@ -253,6 +253,13 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
         const userLogged = this.userService.getUserValue();
         if (!userLogged.id) {
           window.onblur = null;
+          clearInterval(this.timerId);
+
+          this.handleRemoveAllEvent();
+          // thoát toàn màn hình
+          this.closeFullscreen();
+
+          this.dialog.closeAll();
           this.toast.warning({summary: "Vui lòng đăng nhập trước khi làm bài", duration: 3000});
           this.router.navigate(['/login']);
           return;
