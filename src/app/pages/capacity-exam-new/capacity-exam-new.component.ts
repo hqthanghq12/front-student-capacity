@@ -782,7 +782,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
         disableClose: false,
         data: {
           title: "Nộp bài thất bại",
-          description: 'Có lỗi xảy ra trong quá trình nộp bài, vui lòng thử lại sau',
+          description: error ?? 'Có lỗi xảy ra trong quá trình nộp bài, vui lòng thử lại sau',
           isNotShowBtnCancel: true,
           isShowLoading: false,
         }
