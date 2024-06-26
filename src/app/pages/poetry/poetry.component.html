@@ -1,0 +1,187 @@
+<app-loading-page [status]="isFetchingCapacity"></app-loading-page>
+<div *ngIf="statusUser;else templateUser">
+  <div *ngIf="statusExam;else templateName">
+    <div class="capacity py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col col-lg-9 col-md-12 col-sm-12 col-12">
+            <!-- breadcrumb -->
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb" *ngIf="!isFetchingCapacity">
+                <li class="breadcrumb-item"><a routerLink="/">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a routerLink="/test-nang-luc">Danh sách bài thi</a></li>
+              </ol>
+            </nav>
+            <div *ngIf="isFetchingCapacity">
+              <ngx-skeleton-loader [theme]="{width: '50%'}"></ngx-skeleton-loader>
+            </div>
+            <!-- breadcrumb -->
+
+            <div class="capacity__info">
+              <div *ngIf="!isFetchingCapacity">
+
+                <h1 class="capacity__info-name">
+                  <span>Ca thi của kỳ :</span> {{ nameSemeter }}
+                </h1>
+
+                <!-- <div class="capacity__info-desc">
+                  <strong>Nội dung: </strong>
+
+                  <button class="capacity__info-desc-btn btn-base-type-bg fw-normal rounded p-1 px-2" >Chi tiết</button>
+                </div> -->
+
+                <!--                <div class="capacity__info-footer">-->
+                <!--                  <div class="capacity__info-enterprise">-->
+                <!--                    <div class="capacity__info-enterprise-icon">-->
+                <!--                      <i class="fa-solid fa-building"></i>-->
+                <!--                    </div>-->
+
+                <!--                    <div>-->
+                <!--                      <strong>Doanh nghiệp: </strong>-->
+                <!--                      <span class="capacity__info-enterprise-name">FPT Software</span>-->
+                <!--                    </div>-->
+                <!--                  </div>-->
+
+                <!--                  <button class="btn capacity__info-footer-btn btn-register btn-base-type-bg"></button>-->
+                <!--                </div>-->
+              </div>
+
+              <!-- skeleton -->
+              <div *ngIf="isFetchingCapacity">
+                <div class="capacity__info-time-start">
+                  <ngx-skeleton-loader class="flex-fill" [theme]="{width: '50%', margin: 0}"></ngx-skeleton-loader>
+                </div>
+
+                <h1 class="capacity__info-name d-flex">
+                  <ngx-skeleton-loader class="flex-fill" [theme]="{width: '100%', margin: 0}"></ngx-skeleton-loader>
+                </h1>
+
+                <div class="capacity__info-desc">
+                  <ngx-skeleton-loader [theme]="{width: '200px', margin: 0}"></ngx-skeleton-loader>
+                </div>
+
+                <div class="capacity__info-footer">
+                  <ngx-skeleton-loader class="flex-fill" [theme]="{width: '70%'}"></ngx-skeleton-loader>
+
+                  <ngx-skeleton-loader class="flex-fill text-end"
+                                       [theme]="{width: '30%', height: '35px'}"></ngx-skeleton-loader>
+                </div>
+              </div>
+              <!-- end skeleton -->
+            </div>
+
+
+            <div class="capacity__test" #testList>
+              <div class="capacity__test-heading d-flex justify-content-between align-items-center">
+                <h2 class="capacity__test-title fw-bold fs-5 color-blue">Danh sách ca thi</h2>
+                <span class="capacity__test-heading-action" data-bs-toggle="collapse" data-bs-target=".multi-collapse"
+                      aria-expanded="false">Mở rộng tất cả</span>
+              </div>
+
+
+              <ul class="capacity__test-list" *ngIf="!isFetchingCapacity">
+                <li *ngFor="let round of listpoetry; let i = index" class="capacity__test-list-item"
+                    style="margin-left: 20px;" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + i"
+                    aria-expanded="false" [attr.aria-controls]="'collapse-' + i">
+                  <div [ngStyle]="{ 'opacity': (!round.is_in_time || round.have_done) ? '0.5' : '1' }">
+                    <div class="capacity__test-list-item-inner">
+                      <div class="capacity__test-list-item-icon">
+                        <div class="capacity__test-list-item-icon--plus">
+                          <i class="fa-solid fa-plus"></i>
+                        </div>
+
+                        <div class="capacity__test-list-item-icon--minus">
+                          <i class="fa-solid fa-minus"></i>
+                        </div>
+                      </div>
+
+                      <h2 class="capacity__test-name">{{ i + 1 }}. {{ round.name_subject }}
+                        -  {{ round.name_class }} | Thời gian: {{ round.start_time }} - {{ round.finish_time }}</h2>
+                    </div>
+
+                    <div class="collapse multi-collapse capacity__test-detail" [id]="'collapse-' + i">
+                      <div class="d-flex flex-column capacity__test-detail-time">
+                        <!--                      <div class="capacity__test-detail-time-icon mb-2">-->
+                        <!--                        <i class="fa-solid fa-clock"></i>-->
+                        <!--                      </div>-->
+                        <p class="me-5">Phòng thi: <strong>{{ round.room_name }}</strong></p>
+                        <p class="me-5">Hình thức thi:
+                          <strong>{{ round.exam_type == 0 ? "Trắc nghiệm" : "Tự luận" }}</strong> -
+                          <strong>{{ round.exam_time }} phút</strong></p>
+
+                        <!--                                            {{ round.start_time | formatDate }} - {{ round.end_time | formatDate }}-->
+                      </div>
+
+                      <!-- <div class="capacity__test-detail-content">
+                        <strong>Nội dung:</strong>
+
+                        <div [innerHTML]="round.description"></div>
+                      </div> -->
+
+                      <a *ngIf="round.is_in_time && !round.have_done"
+                         [routerLink]="['/test-nang-luc/vao-thi', user.id, round.id,user.campus.id,round.id_block_subject,idPoetry]"
+                         class="btn btn-register capacity__test-detail-btn">Xem đề thi</a>
+                      <p *ngIf="!round.is_in_time && !round.have_done" class="btn btn-register capacity__test-detail-btn">Bạn đang không
+                        trong khoảng thời gian được phép làm bài</p>
+                      <p *ngIf="round.have_done" class="btn btn-register capacity__test-detail-btn">Bạn đã làm bài thi
+                        này rồi</p>
+                    </div>
+                  </div>
+                </li>
+
+                <li *ngIf="!listpoetry" style="text-align: center;padding: 20px 0;">Bạn không có ca thi nào trong ngày hôm nay!</li>
+              </ul>
+
+              <!-- skeleton -->
+              <ul class="capacity__test-list" *ngIf="isFetchingCapacity">
+                <ngx-skeleton-loader count="3" [theme]="{height: '35px', margin: '0 0 6px'}"></ngx-skeleton-loader>
+              </ul>
+              <!-- skeleton -->
+            </div>
+
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <ng-template #description let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title m-0 fw-bold">Nội dung bài Test năng lực</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <!-- <div class="modal-body" [innerHTML]="capacity.description"></div> -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Đóng</button>
+      </div>
+    </ng-template>
+  </div>
+
+
+  <ng-template #templateName>
+    <div class="container my-4" #templateName>
+      <section class="capacity__exam-description text-center">
+        <h2 class="text-center tw-p-20 capacity__exam-description-title" *ngIf="!isFetchingCapacity">
+          Bạn chưa có ca thi nào trong ngày
+        </h2>
+      </section>
+
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #templateUser>
+  <div class="container my-4">
+    <section class="capacity__exam-description tw-p-10 text-center">
+      <h2 class="text-center capacity__exam-description-title">
+        Bạn chưa đăng nhập để làm bài thi
+      </h2>
+
+      <button class="btn btn-register text-center btn-base-type-bg" [routerLink]="['/login']">Đăng nhập</button>
+    </section>
+
+  </div>
+</ng-template>
+

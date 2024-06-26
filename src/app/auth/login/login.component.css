@@ -1,0 +1,38 @@
+.container-fluid {
+  background-image: url("../../../assets/img/login-bg.jpg");
+}
+
+.login-box {
+  width: 400px;
+  height: 50%;
+}
+
+.btn_login-google {
+  padding: 10px 150px;
+  background-color: var(--primary-color);
+  color: #ffff;
+  border-radius: 6px;
+}
+
+.btn_login-google:hover {
+  opacity: 0.8;
+}
+
+/*
+*   responsive
+*/
+/* -----Mobile----- */
+@media (max-width :767px) {
+  .login-box {
+    height: 40%;
+  }
+
+  .logo_go-img {
+    width: 55%;
+  }
+
+  .btn_login-google {
+    padding: 10px 90px;
+  }
+
+}

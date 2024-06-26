@@ -1,0 +1,213 @@
+<!-- *ngIf="checkUserExam;else checkUser" -->
+<div>
+  <!-- *ngIf="statusExam;else templateName" -->
+  <div class="container my-4">
+    <div class="capacity__exam-heading" *ngIf="!isFetchingRound">
+      <div class="capacity__exam-heading-inner d-flex align-items-center justify-content-center">
+        <span class="capacity__exam-heading-line"></span>
+        <h1 class="capacity__exam-heading-title text-center">Tên đề thi : {{ roundDetail.name }}</h1>
+        <span class="capacity__exam-heading-line"></span>
+      </div>
+      <div class="text-center">
+        <p *ngIf="isTakingExam">Câu hỏi: <span class="text-red">{{ data.total_questions }} câu</span>, thời gian: <span
+          class="text-red">{{ data.time }} phút</span></p>
+
+        <div *ngIf="!isTakingExam">
+          <span>Môn thi: {{ roundDetail.name_subject }}</span>
+          <!-- {{ DataPoetry.start_time }} -->
+          <!-- {{ DataPoetry.end_time }} -->
+          <!-- bắt đầu: <span class="text-red"></span>,
+          hạn chót: <span class="text-red"></span> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- chờ làm bài -->
+    <section class="capacity__exam-description text-center" *ngIf="!isTakingExam">
+      <h2 class="text-center capacity__exam-description-title">
+        Hãy nhấn
+        <span class="text-uppercase text-red">bắt đầu</span>
+        để làm bài
+      </h2>
+
+      <button class="btn btn-register text-center btn-base-type-bg" (click)="handleTakeExam()">Bắt đầu</button>
+    </section>
+
+    <!-- làm bài -->
+    <!-- *ngIf="isFullScreen;else error" -->
+    <form (ngSubmit)="handleSubmitExam()" [formGroup]="formAnswers" *ngIf="isTakingExam">
+      <div class="row">
+        <div class="col col-12 col-md-3">
+          <div class="sidebar">
+            <h2 class="sidebar__title">{{ data.name }}</h2>
+
+            <ul class="sidebar__list m-0 p-0">
+              <li class="sidebar__list-item d-flex align-items-center">
+                <div class="sidebar__list-item-icon">
+                  <i class="fa-solid fa-list"></i>
+                </div>
+
+                <div class="sidebar__list-item-text">
+                  <strong>{{ data.total_questions }}</strong> câu hỏi
+                </div>
+              </li>
+
+              <li class="sidebar__list-item d-flex align-items-center">
+                <div class="sidebar__list-item-icon">
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+
+                <div class="sidebar__list-item-text">
+                  <strong>{{ data.time }}</strong> phút làm bài
+                </div>
+              </li>
+
+              <li class="sidebar__list-item d-flex align-items-center primary-color">
+                <div class="sidebar__list-item-icon primary-color">
+                  <i class="fa-solid fa-hourglass"></i>
+                </div>
+
+                <div class="sidebar__list-item-text">
+                  Thời gian còn lại
+                </div>
+              </li>
+            </ul>
+
+            <ul class="sidebar__countdown d-flex justify-content-center p-0">
+              <li class="sidebar__countdown-item text-center">
+                <strong
+                  class="sidebar__countdown-item-time d-block primary-color">{{ countDownTimeExam.minutes }}</strong>
+                Phút
+              </li>
+
+              <li class="primary-color sidebar__countdown-item-time">:</li>
+
+              <li class="sidebar__countdown-item text-center">
+                <strong
+                  class="sidebar__countdown-item-time d-block primary-color">{{ countDownTimeExam.seconds }}</strong>
+                Giây
+              </li>
+            </ul>
+
+            <button class="btn btn-register sidebar__countdown-btn">Nộp bài</button>
+
+            <section class="question">
+              <span class="question__title">Câu hỏi</span>
+
+              <div class="question__list">
+                <!-- active câu hỏi đã làm -->
+                <div class="question__list-item" (click)="scrollToQuestion(i)"
+                     [ngClass]="{ active: checkQuesAnswered('question-' + (i + 1) + '-' + ques.id + '-' + ques.type) }"
+                     *ngFor="let ques of fakeQuestionData; let i = index">
+                  <div class="question__list-item-inner">{{ i + 1 }}</div>
+                </div>
+                <!--                <div class="question__list-item" (click)="scrollToQuestion(i)"-->
+                <!--                     [ngClass]="{active: checkQuesAnswered(ques.id)}"-->
+                <!--                     *ngFor="let ques of fakeQuestionData; let i = index">-->
+                <!--                  <div class="question__list-item-inner">{{ i + 1 }}</div>-->
+                <!--                </div>-->
+              </div>
+            </section>
+
+            <section class="sidebar__note">
+              <span class="sidebar__note-title primary-color">* Lưu ý</span>
+              <ul class="sidebar__note-list">
+                <li class="sidebar__note-list-item">- Sinh viên chú ý thời gian làm bài</li>
+                <li class="sidebar__note-list-item">- Chỉ được sử dụng 1 bút và 1 tờ giấy nháp</li>
+                <li class="sidebar__note-list-item">- Chỉ được nộp bài sau 2/3 thời gian</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <div class="col col-12 col-md-9 question__content">
+          <ul class="question__content-list">
+            <div class="question__content-item" *ngFor="let question of fakeQuestionData; let i = index" #questions
+                 [id]="'question-' + i">
+              <span class="question__content-item-num d-block">Câu {{ i + 1 }}:</span>
+              <!-- [appMath]="" -->
+              <!-- | replaceContent: question.images -->
+
+              <p class="question__content-item-content" id="mathjax_id"
+                 [appMath]="question.content | replaceContent: question.images"></p>
+              <ul class="answers">
+                <!-- câu hỏi có 1 đáp án -->
+                <div *ngIf="question.type === 0">
+                  <li class="answers__item" *ngFor="let answer of question.answers; let j = index"
+                      (click)="handleChooseAnswer(question.id, answer.id)">
+                    <input class="answers__input" type="radio" hidden [id]="'answer-' + answer.id"
+                           [formControlName]="'question-' + (i + 1) + '-' + question.id + '-' + question.type"
+                           [value]="answer.id">
+                    <label [for]="'answer-' + answer.id" class="answer d-flex align-items-center">
+                      <span
+                        class="answer__num d-flex justify-content-center align-items-center">{{ (j + 10).toString(36).toUpperCase() }}</span>
+                      <p class="answer__content m-0" [appMath]="answer.content | replaceContent: question.images"></p>
+                    </label>
+                  </li>
+                </div>
+
+                <!-- câu hỏi có nhiều đáp án -->
+                <div *ngIf="question.type === 1">
+                  <li class="answers__item border-square" *ngFor="let answer of question.answers; let j = index"
+                      (click)="handleChooseAnswer(question.id, answer.id)">
+                    <input
+                      class="answers__input"
+                      type="checkbox"
+                      hidden
+                      [id]="'answer-' + answer.id"
+                      (change)="onCheckChange('question-' + (i + 1) + '-' + question.id + '-' + question.type, $event)"
+                      [value]="answer.id"
+                    />
+                    <label
+                      [for]="'answer-' + answer.id"
+                      class="answer d-flex align-items-center"
+                    >
+                      <span class="answer__num d-flex justify-content-center align-items-center">{{
+                        (j + 10).toString(36).toUpperCase()
+                        }}</span>
+                      <p class="answer__content m-0" [appMath]="answer.content | replaceContent: question.images"></p>
+                      <!--                      <p class="answer__content m-0" [appMath]="answer.content | replaceContent: question.images"></p>-->
+                    </label>
+                  </li>
+                </div>
+
+              </ul>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </form>
+    <!-- <ng-template #error>
+      <div class="container my-4" #templateName>
+        <section class="capacity__exam-description text-center">
+          <h2 class="text-center capacity__exam-description-title">
+              Vui lòng bấm f11 để tiếp tục
+          </h2>
+
+        </section>
+      </div>
+    </ng-template> -->
+
+  </div>
+  <!-- <ng-template #templateName>
+    <div class="container my-4" #templateName>
+      <section class="capacity__exam-description text-center">
+        <h2 class="text-center capacity__exam-description-title">
+          Bạn không có bài thi nào trong ca thi này
+        </h2>
+
+      </section>
+    </div>
+  </ng-template> -->
+</div>
+
+<!-- <ng-template #checkUser>
+  <div class="container my-4" >
+    <section class="capacity__exam-description text-center">
+      <h2 class="text-center capacity__exam-description-title">
+        Bạn đã làm bài thi này không thể làm lại nữa
+      </h2>
+
+    </section>
+  </div>
+</ng-template> -->
