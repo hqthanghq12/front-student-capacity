@@ -96,7 +96,6 @@ const googleLoginOptions = {
     MathjaxDirective,
     RenderMathDirective,
     DisableEventsDirective,
-    
   ],
   imports: [
     MathModule.forRoot(),

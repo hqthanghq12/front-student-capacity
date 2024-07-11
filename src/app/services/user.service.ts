@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {BehaviorSubject, Observable, Observer} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from 'src/environments/environment';
+import {Contest} from '../models/contest';
 import {ResponsePayload} from '../models/response-payload';
 import {User} from '../models/user';
 
