@@ -1,0 +1,95 @@
+<section class="vh-100">
+    <ng-toasty position="toaster-top-right"></ng-toasty>
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <!-- <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                    class="img-fluid" alt="Sample image">
+            </div> -->
+            <!-- <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1"> -->
+            <div class="col-md-8 col-lg-6 col-xl-4 p-5 bg-white shadow rounded">
+                <form [formGroup]="userForm" (ngSubmit)="onSubmit()" novalidate>
+                    <a href="" class="">
+                        <img class="mb-5 logo_go-img w-50 mx-auto" src="../../../assets/img/logo.png" alt="">
+                    </a>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <!-- <p class="lead fw-normal mb-0 me-2">Đăng nhập với</p> -->
+                        <!-- <button type="button" id="button_login_gg" class="btn btn-floating mx-1"
+                            [disabled]="disabledButton">
+                            <i class="fab fa-google"></i> Google
+                        </button> -->
+                        <asl-google-signin-button theme="filled_blue" width="400" type='standard'
+                                    size='large'></asl-google-signin-button>
+                    </div>
+
+                    <div class="divider d-flex align-items-center my-4">
+                        <p class="text-center fw-bold mx-3 mb-0">Hoặc</p>
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-3">
+                        <input type="email" id="email" class="form-control form-control-lg" placeholder="Email"
+                            formControlName="email" required />
+                        <!-- <p class="text-danger mt-1" id="error_email"
+                            *ngIf="userForm.get('email')?.hasError('emailDomain') && userForm.get('email')?.invalid && userForm.get('email')?.touched">
+                            Email must be from domain @fpt.edu.vn or @fe.edu.vn</p> -->
+                        <p class="text-danger mt-1"
+                            *ngIf="userForm.get('email')?.hasError('required') && userForm.get('email')?.touched">
+                            Email bắt buộc nhập
+                        </p>
+                        <!-- <p class="text-danger mt-1"
+                            *ngIf="userForm.get('email')?.hasError('emailDomain') && userForm.get('email')?.invalid && userForm.get('email')?.touched">
+                            Email phải từ domain @fpt.edu.vn hoặc @fe.edu.vn
+                        </p> -->
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <input type="password" id="password" class="form-control form-control-lg" placeholder="Mật khẩu"
+                            formControlName="password" required min="6" />
+                        <p class="text-danger mt-1"
+                            *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched">
+                            Mật khẩu bắt buộc nhập
+                        </p>
+                        <p class="text-danger mt-1"
+                            *ngIf="userForm.get('password')?.hasError('minlength') && userForm.get('password')?.touched">
+                            Mật khẩu phải có ít nhất 6 ký tự
+                        </p>
+                        <!-- <p class="text-danger mt-1" id="error_password" *ngIf="userForm.get('password')?.hasError('minlength') && userForm.get('password')?.invalid && userForm.get('password')?.touched">Vui lòng nhập mật khẩu</p> -->
+                    </div>
+
+                    <!-- <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="form-check mb-0">
+                            <input class="form-check-input me-2" id="remember" type="checkbox"
+                                formControlName="remember" />
+                            <label class="form-check-label" for="remember">
+                                Ghi nhớ đăng nhập
+                            </label>
+                        </div>
+                        <a href="/forgotPw" class="text-body">Quên mật khẩu?</a>
+                    </div> -->
+
+                    <div class="text-center pt-2">
+                        <div *ngIf="disabledButton">
+                            <button disabled data-mdb-button-init data-mdb-ripple-init class="btn"
+                                id="button_submit_login" style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                                <div class="spinner-border spinner-border-sm" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div> Đăng nhập
+                            </button>
+                        </div>
+
+                        <div *ngIf="!disabledButton">
+                            <button type="submit" [disabled]="userForm.invalid" data-mdb-button-init
+                                data-mdb-ripple-init class="btn" id="button_submit_login"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Đăng nhập</button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>

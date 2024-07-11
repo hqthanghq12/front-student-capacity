@@ -13,6 +13,7 @@ export const environment = {
   // GG_CLIENT_SECRET: "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",
   GG_CLIENT_ID: "459417311408-5msh1106q9mbpgbltuogfj6j9t730mta.apps.googleusercontent.com",
   GG_CLIENT_SECRET: "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",
+  login: authApi + '/login',
   loginUrl: authApi + "/login-token",
   fakeLoginUrl: authApi + "/fake-login",
   publicApiUrl: `${baseApiUrl}/public`,

@@ -8,7 +8,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule, GoogleSigninButtonDirective} from '@abacritt/angularx-social-login';
 import {environment} from 'src/environments/environment';
-import {LoginComponent} from './auth/login/login.component';
+// import {LoginComponent} from './auth/login/login.component';
+import {LoginComponent} from './auth/login_v2/login.component';
 import {HomeComponent} from './pages/home/home.component';
 import {JwtInterceptor} from './_helpers/jwt.interceptor';
 import {ErrorInterceptor} from './_helpers/error.interceptor';
@@ -60,7 +61,7 @@ import { MathjaxDirective } from './directive/mathjax.directive';
 import { RenderMathDirective } from './directive/render-math.directive';
 import {MathModule} from './math/math.module';
 import { DisableEventsDirective } from './Event/disable-events.directive';
-
+import { ToastyModule } from 'ng-toasty'
 const googleLoginOptions = {
   scopes: 'profile email',
   // plugin_name:'login' //you can use any name here
@@ -114,6 +115,7 @@ const googleLoginOptions = {
     NgToastModule,
     NzSelectModule,
     NzSpinModule,
+    ToastyModule
   ],
   providers: [
     {
