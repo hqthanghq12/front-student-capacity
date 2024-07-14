@@ -18,25 +18,25 @@ import { UserService } from 'src/app/services/user.service';
 export class LoginComponent implements OnInit {
     userForm: FormGroup;
     disabledButton = false;
-    alert = {
-        type: 'danger',
-        message: "",
-    }
+    // alert = {
+    //     type: 'danger',
+    //     message: "",
+    // }
     ToasterPosition = ToasterPosition;
 
 
-    socialUser!: SocialUser;
-    c?: boolean = true;
-    statusLogin: boolean = false;
+    // socialUser!: SocialUser;
+    // c?: boolean = true;
+    // statusLogin: boolean = false;
 
 
     constructor(
         private fb: FormBuilder,
         private loginService: LoginService,
-        private router: Router,
+        // private router: Router,
         private toast: ToastyService,
-        private userService: UserService,
-        private socialAuthService: SocialAuthService,
+        // private userService: UserService,
+        // private socialAuthService: SocialAuthService,
 
 
     ) {
@@ -46,11 +46,11 @@ export class LoginComponent implements OnInit {
             remember: new FormControl(false)
         });
 
-        this.socialAuthService.authState.subscribe((user) => {
-            this.socialUser = user;
+        // this.socialAuthService.authState.subscribe((user) => {
+        //     this.socialUser = user;
       
-            this.loginWithGoogle(this.socialUser.idToken)
-          });
+        //     this.loginWithGoogle(this.socialUser.idToken)
+        // });
     }
     ngOnInit(): void { }
     onSubmit() {
@@ -79,30 +79,30 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    loginWithGoogle(token: any): void {
+    // loginWithGoogle(token: any): void {
 
-        this.statusLogin = true;
-        let dataSignIn = {
-            token: token,
-            campus_code: '1',
-        };
+    //     this.statusLogin = true;
+    //     let dataSignIn = {
+    //         token: token,
+    //         campus_code: '1',
+    //     };
 
 
-        this.toast.warning('Đang tiến hành đăng nhập', 10000);
-        this.userService.login(dataSignIn).subscribe((status) => {
-            this.statusLogin = false;
-            if (status) {
-                setTimeout(() => {
-                    //   this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
-                    this.toast.success('Đăng nhập thành công', 5000);
-                    this.router.navigate(['/']);
-                }, 1000);
-            } else {
-                this.toast.danger('Không thể đăng nhập', 5000);
-                // this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
-            }
-        });;
-    }
+    //     this.toast.warning('Đang tiến hành đăng nhập', 10000);
+    //     this.userService.login(dataSignIn).subscribe((status) => {
+    //         this.statusLogin = false;
+    //         if (status) {
+    //             setTimeout(() => {
+    //                 //   this.toast.success({summary: 'Đăng nhập thành công', duration: 5000});
+    //                 this.toast.success('Đăng nhập thành công', 5000);
+    //                 this.router.navigate(['/']);
+    //             }, 1000);
+    //         } else {
+    //             this.toast.danger('Không thể đăng nhập', 5000);
+    //             // this.toast.error({summary: 'Không thể đăng nhập', duration: 5000});
+    //         }
+    //     });;
+    // }
 
-    protected readonly event = event;
+    // protected readonly event = event;
 }
