@@ -22,6 +22,21 @@ export class ConfigViewService {
     }, 5)
   }
 
+  runStatisticHometime(el: any, to: any) {
+    let speed = 200
+    let from = 0
+    let step = to / speed
+    const counter = setInterval(function () {
+      from += step
+      if (from > to) {
+        clearInterval(counter)
+        el.innerText = to + '%';
+      } else {
+        el.innerText = Math.ceil(from) + '%'
+      }
+    }, 5)
+  }
+
   // Hiệu ứng chuyển động
   activityStrollView(elToShow: any) {
     function isElInViewPort(el: any) {

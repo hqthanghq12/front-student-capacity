@@ -11,5 +11,9 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  preventDefault(event: MouseEvent): void {
+    event.preventDefault();
+  }
+
 
 }
