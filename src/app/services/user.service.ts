@@ -117,4 +117,9 @@ export class UserService {
     const headers = new HttpHeaders();
     return this.http.post<ResponsePayload>(`${environment.userListUrl}/edit`, data);
   }
+
+  updatePassword(data: any): Observable<ResponsePayload> {
+    const headers = new HttpHeaders();
+    return this.http.post<ResponsePayload>(`${environment.userListUrl}/updatePassword`, data);
+  }
 }

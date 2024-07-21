@@ -40,7 +40,7 @@ export const environment = {
   contestV1Url: `${jwtApiUrl}/contest`,
   teamListUrl: `${jwtApiUrl}/teams`,
   takeExamUrl: `${jwtApiUrl}/take-exam`,
-  userV1Url: `${jwtApiUrl}/user`
+  userV1Url: `${jwtApiUrl}/user`,
 };
 
 /*
