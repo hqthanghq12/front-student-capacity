@@ -29,9 +29,18 @@
         <span class="text-uppercase text-red">bắt đầu</span>
         để làm bài
       </h2>
-
-      <button class="btn btn-register text-center btn-base-type-bg" (click)="handleTakeExam()">Bắt đầu</button>
-    </section>
+    
+      <button 
+        class="btn btn-register text-center btn-base-type-bg"
+        [disabled]="isLoading"
+        (click)="handleTakeExam()"
+      >
+        <ng-container *ngIf="!isLoading">Bắt đầu</ng-container>
+        <ng-container *ngIf="isLoading">
+          <span class="spinner-border spinner-border-sm"></span> Đang tải...
+        </ng-container>
+      </button>
+    </section>    
 
     <!-- làm bài -->
     <!-- *ngIf="isFullScreen;else error" -->

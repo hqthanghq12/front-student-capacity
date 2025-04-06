@@ -46,6 +46,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
   questionListId: { questionId: number }[] = [];
   round_id: number;
   isTakingExam = false;
+  isLoading = false;
   roundDetail!: Round;
   DataPoetry: any;
   DataPlayTopic: any;
@@ -119,7 +120,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
             this.isFetchingRound = false;
             // this.roundDetail = resExams.payload;
             this.roundDetail = this.DataPlayTopic;
-            this.roundDetail.start_time = new Date("2022-06-25 15:25:54");
+            // this.roundDetail.start_time = new Date("2022-06-25 15:25:54");
             // this.round_id = resExams.payload.id;
             this.round_id = this.roundDetail.id;
 
@@ -235,7 +236,6 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
 
   // làm bài
   handleTakeExam() {
-
     const confimExamRef = this.dialog.open(DialogConfirmComponent, {
       width: '450px',
       data: {
@@ -272,7 +272,30 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
         const timeStart = new Date(this.roundDetail.start_time).getTime();
 
         if (todayTime < timeStart) {
-          this.toast.warning({summary: "Chưa đến thời gian làm bài"});
+          this.dialog.open(DialogConfirmComponent, {
+            width: "350px",
+            data: {
+              title: "Lỗi",
+              description: "Chưa đến thời gian làm bài!",
+              textCancel: "Thoát",
+              textOk: "Đồng ý"
+            }
+          });
+          return;
+        }
+
+        if ((todayTime - timeStart) / (1000 * 60) > 15) {
+          console.log((todayTime - timeStart) / (1000 * 60));
+          
+          this.dialog.open(DialogConfirmComponent, {
+            width: "350px",
+            data: {
+              title: "Lỗi",
+              description: "Thời gian vào làm bài thi đã hết!",
+              textCancel: "Thoát",
+              textOk: "Đồng ý"
+            }
+          });
           return;
         }
 
@@ -300,6 +323,8 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
         // fake api tạo bản nháp
         // console.log(this.idExam);
         setTimeout(() => {
+          // loading bài thi
+          this.isLoading = true;
           // kích thước khi full màn hình
           this.windowScreenSize = {
             width: window.innerWidth,
@@ -355,6 +380,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
             this.data = res.payload;
             let questionsOrder = JSON.parse(this.data.questions_order);
             this.isTakingExam = true;
+            this.isLoading = false;
             this.fakeQuestionData = questionsOrder.map((id: any) => this.data.questions.find((q: {
               id: any;
             }) => q.id === id));
@@ -384,6 +410,7 @@ export class CapacityExamNewComponent implements OnInit, OnDestroy {
 
           }
         }, error => {
+          this.isLoading = false;
           this.dialog.open(DialogConfirmComponent, {
             width: "350px",
             data: {
