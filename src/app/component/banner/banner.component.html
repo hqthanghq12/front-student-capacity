@@ -1,7 +1,22 @@
 <ngb-carousel *ngIf="bannerStatus">
-    <ng-template ngbSlide *ngFor="let b of banner">
+    <ng-template ngbSlide >
         <div class="picsum-img-wrapper home-banner-img-box">
-            <img [src]="b.image_url" class="w-100" alt="Random first slide">
+            <img src="https://phothongcaodang.fpt.edu.vn/wp-content/uploads/T7.23-WonderBeeP2_banner-web-2000x947px.png" class="w-100" alt="Random first slide">
+        </div>
+    </ng-template>
+    <ng-template ngbSlide>
+        <div class="picsum-img-wrapper home-banner-img-box">
+            <img src="https://phothongcaodang.fpt.edu.vn/wp-content/uploads/2000x947.jpg" class="w-100" alt="Random first slide">
+        </div>
+    </ng-template>
+    <ng-template ngbSlide>
+        <div class="picsum-img-wrapper home-banner-img-box">
+            <img src="https://phothongcaodang.fpt.edu.vn/wp-content/uploads/anh-binh-desk.jpg" class="w-100" alt="Random first slide">
+        </div>
+    </ng-template>
+    <ng-template ngbSlide>
+        <div class="picsum-img-wrapper home-banner-img-box">
+            <img src="https://phothongcaodang.fpt.edu.vn/wp-content/uploads/BANNER-WEB.jpg" class="w-100" alt="Random first slide">
         </div>
     </ng-template>
 
@@ -11,3 +26,4 @@
         appearance="line">
     </ngx-skeleton-loader>
 </div>
+

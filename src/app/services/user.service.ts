@@ -1,12 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Observer } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { Contest } from '../models/contest';
-import { ResponsePayload } from '../models/response-payload';
-import { User } from '../models/user';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {BehaviorSubject, Observable, Observer} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {environment} from 'src/environments/environment';
+import {Contest} from '../models/contest';
+import {ResponsePayload} from '../models/response-payload';
+import {User} from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export class UserService {
   private userSubject: BehaviorSubject<User>;
   private jwtToken: BehaviorSubject<string>;
   public user: Observable<User | null>;
+
   constructor(
     private http: HttpClient,
     private router: Router
@@ -32,14 +33,18 @@ export class UserService {
     return this.jwtToken.value;
   }
 
-  login(authToken: string) {
-    return this.http.post<ResponsePayload>(environment.loginUrl, { token: authToken })
+  login(data: {
+    token: string,
+    campus_code: string,
+  }) {
+    return this.http.post<ResponsePayload>(environment.loginUrl, data)
       .pipe(map(response => {
         if (response.status == true) {
           let dataUser = response.payload!.user;
           if (dataUser.avatar == null) {
             dataUser.avatar = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-          };
+          }
+
           localStorage.setItem("user", JSON.stringify(response.payload!.user));
           localStorage.setItem("avatar", JSON.stringify(dataUser.avatar));
           localStorage.setItem('auth_token', response.payload!.token);
@@ -48,6 +53,33 @@ export class UserService {
           this.jwtToken.next(response.payload.token);
         }
 
+        return response.status;
+      }));
+  }
+
+
+  fakeLogin(data: {
+    campus_code: string,
+    email_user : string
+  }) {
+    return this.http.post<ResponsePayload>(environment.fakeLoginUrl, data)
+      .pipe(map(response => {
+        // console.log(response);
+        
+        if (response.status == true) {
+          let dataUser = response.payload!.user;
+          if (dataUser.avatar == null) {
+            dataUser.avatar = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+          }
+
+          localStorage.setItem("user", JSON.stringify(response.payload!.user));
+          localStorage.setItem("avatar", JSON.stringify(dataUser.avatar));
+          localStorage.setItem('auth_token', response.payload!.token);
+          localStorage.setItem('token_type', JSON.stringify(response.payload!.token_type));
+          this.userSubject.next(response.payload.user);
+          this.jwtToken.next(response.payload.token);
+        }
+        
         return response.status;
       }));
   }
@@ -84,5 +116,10 @@ export class UserService {
   editInfoUser(data: any): Observable<ResponsePayload> {
     const headers = new HttpHeaders();
     return this.http.post<ResponsePayload>(`${environment.userListUrl}/edit`, data);
+  }
+
+  updatePassword(data: any): Observable<ResponsePayload> {
+    const headers = new HttpHeaders();
+    return this.http.post<ResponsePayload>(`${environment.userListUrl}/updatePassword`, data);
   }
 }

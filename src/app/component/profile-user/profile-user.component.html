@@ -1,4 +1,5 @@
 <div class="p-2">
+    <ng-toasty position="toaster-top-right"></ng-toasty>
     <div class="border-bottom">
         <h3 class=" fs-5 primary-color">Hồ sơ của tôi</h3>
         <p style="margin-top: -12px;" class="color-gray">Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
@@ -25,10 +26,92 @@
                 <label for="" class="register-label">Tên của bạn</label>
             </div>
         </div>
+        <div class="pt-4 d-flex justify-content-center">
+            <div class="register-input-box">
+                <input type="text" [value]=" userInfo?.campus?.name" class="register-input-text" disabled>
+                <label for="" class="register-label">Cơ sở</label>
+            </div>
+        </div>
         <button class="mt-4 btn btn-base-type-bg" (click)="EditInFoUser()">Sửa thông
             tin</button>
     </form>
-    <mat-accordion>
+
+
+    <div class="border-bottom mt-5">
+        <h3 class=" fs-5 primary-color">Đổi mật khẩu tài khoản</h3>
+    </div>
+
+    <form class="profile-user-body my-4 text-center" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="pt-4 d-flex justify-content-center">
+            <div class="register-input-box">
+                <input id="oldPassword" type="password" class="register-input-text" formControlName="oldPassword" #p>
+                <label for="" class="register-label">Mật khẩu cũ</label>
+                <div *ngIf="oldPassword.invalid && (oldPassword.dirty || oldPassword.touched)" class="form-text text-danger">
+                    <div *ngIf="oldPassword.errors?.['required']">
+                        Vui lòng nhập mật khẩu cũ
+                    </div>
+                    <div *ngIf="oldPassword.errors?.['minlength']">
+                        Mật khẩu phải có ít nhất 8 ký tự
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pt-4 d-flex justify-content-center">
+            <div class="register-input-box">
+                <input type="password" class="register-input-text" formControlName="newPassword" #pw>
+                <label for="" class="register-label">Mật khẩu mới</label>
+                <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)" class="form-text text-danger">
+                    <div *ngIf="newPassword.errors?.['required']">
+                        Vui lòng nhập mật khẩu mới
+                    </div>
+                    <div *ngIf="oldPassword.errors?.['minlength']">
+                        Mật khẩu phải có ít nhất 8 ký tự
+                    </div>
+                    <div *ngIf="newPassword.errors?.['pattern']">
+                        Mật khẩu phải chứa ít nhất một số, một chữ hoa và một
+                        chữ thường <br> ít nhất 8 ký tự<br />
+                        Mật khẩu không được chứa khoảng trắng
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pt-4 d-flex justify-content-center">
+            <div class="register-input-box">
+                <input type="password" class="register-input-text" formControlName="confirmPassword" #cpw>
+                <label for="" class="register-label">Nhập lại mật khẩu mới</label>
+                <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="form-text text-danger">
+                    <div *ngIf="confirmPassword.errors?.['required']">
+                        Vui lòng nhập lại mật khẩu mới
+                    </div>
+                    <div *ngIf="oldPassword.errors?.['minlength']">
+                        Mật khẩu phải có ít nhất 8 ký tự
+                    </div>
+                    <div *ngIf="confirmPassword.errors?.['pattern']">
+                        Mật khẩu phải chứa ít nhất một số, một chữ hoa và một
+                        chữ thường <br> ít nhất 8 ký tự<br />
+                        Mật khẩu không được chứa khoảng trắng
+                    </div>
+                    <div *ngIf="confirmPassword.errors?.['confirmedValidator']">
+                        Mật khẩu không khớp
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <button class="mt-4 btn btn-base-type-bg" (click)="EditInFoUser()">Cập nhật mật khẩu</button> -->
+        <button *ngIf="disabledButton" disabled data-mdb-button-init data-mdb-ripple-init class="mt-4 btn btn-base-type-bg" 
+            style="padding-left: 2.5rem; padding-right: 2.5rem;">
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+            </div> Cập nhật mật khẩu
+        </button>
+
+            <button *ngIf="!disabledButton" type="submit" [disabled]="userForm.invalid" data-mdb-button-init
+                data-mdb-ripple-init class="mt-4 btn btn-base-type-bg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;">Cập nhật mật khẩu</button>
+    </form>
+
+
+    <!-- <mat-accordion>
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -46,10 +129,10 @@
                     Self aware panel
                 </mat-panel-title>
                 <mat-panel-description>
-                    
+
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <p>I'm visible because I am open</p>
         </mat-expansion-panel>
-    </mat-accordion>
+    </mat-accordion> -->
 </div>

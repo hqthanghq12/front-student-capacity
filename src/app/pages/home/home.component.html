@@ -3,32 +3,20 @@
     <div class="row intro-header my-1">
         <div class="col-xl-6 col-md-12 col-sm-12">
             <div class="intro-detail-box">
-                <h2 class="text-left fs-3 color-blue fw-bold" style="margin-top:40px">Ai có
-                    thể tham gia
-                    cuộc thi ?</h2>
-                <p class="pt-2  lh-base fs-6 description-software" style="text-align:justify ">Lorem Phát
-                    biểu với báo
-                    giới sau
-                    cuộc hòa đàm với
-                    Nga, nhà
-                    đàm phán Ukraine David Arakhamia nói: “Theo cơ chế đó, các nước đứng ra bảo đảm an ninh cho Ukraine
-                    sẽ hành động theo cách tương tự Điều 5 trong Hiến chương NATO và thậm chí còn chắc chắn hơn”.
-
-                    Ông Arakhamia cho biết, Ukraine muốn các quốc gia bảo đảm là Mỹ, Trung Quốc, Pháp và Anh - 4 trong
-                    số 5 thành viên thường trực Hội đồng Bảo an Liên hợp quốc - cùng với Canada, Đức, Israel, Italy, Ba
-                    Lan và Thổ Nhĩ Kỳ. Ngoại trừ Trung Quốc và Israel, những quốc gia vừa đề cập đều là thành viên NATO.
+                <h2 class="text-left fs-3 color-blue fw-bold" style="margin-top:40px">Đón hè cực cool cùng hoạt động Team building tại Phổ thông Cao đẳng – FPT Polytechnic </h2>
+                <p class="pt-2  lh-base fs-6 description-software" style="text-align:justify ">Tháng 7 này Phổ thông Cao đẳng – FPT Polytechnic có gì?  Hè đã về cùng tiếng ve kêu rộn ràng với những cành phượng đỏ thắm cực phù hợp với những hoạt động Team building đúng không? Còn chần chừ …
                 </p>
             </div>
         </div>
         <div class="col-xl-6 col-md-12 col-sm-12">
             <span class="">
-                <img style="margin-top: 30px;" src="./../../../assets/img/image 407.svg" class="w-100 text-center"
+                <img style="margin-top: 30px;" src="https://phothongcaodang.fpt.edu.vn/wp-content/uploads/T7.23-WonderBeeP2_Thumnail-web-1536x1024px-770x500.png" class="w-100 text-center"
                     alt="">
             </span>
         </div>
     </div>
     <hr>
-    <div class="mb-3">
+    <!-- <div class="mb-3">
         <h3 class="fw-bold title text-uppercase text-center color-blue">Lợi ích khi tham gia</h3>
         <div class="title-line">
         </div>
@@ -69,7 +57,7 @@
                     beatae dolore asperiores corrupti laboriosam quis eum.</p>
             </span>
         </div>
-    </div>
+    </div> -->
 </div>
 
 <div class="container-fluid section_plan text-center mt-4">
@@ -79,19 +67,19 @@
             <div class="col-3 section_plan-item mb-4 show-on-scroll zoom">
                 <h3 class="section_plan-bag-number text-white section_plan-student">0</h3>
                 <span class="text-white section_plan-bag-text fw-bold ">
-                    Năm hoạt động
+                    Doanh nghiệp đối tác
                 </span>
             </div>
             <div class="col-3 section_plan-item mb-4 show-on-scroll zoom">
                 <h3 class="section_plan-bag-number  text-white section_plan-year">0</h3>
                 <span class="text-white section_plan-bag-text fw-bold">
-                    Sinh viên
+                    Sinh viên & Cựu SV
                 </span>
             </div>
             <div class="col-3 mb-4 section_plan-item show-on-scroll zoom">
                 <h3 class="section_plan-bag-number  text-white section_plan-pass">0</h3>
                 <span class="text-white section_plan-bag-text fw-bold">
-                    Được nhận
+                    Sinh viên có việc làm
                 </span>
             </div>
         </div>
@@ -99,149 +87,20 @@
 
 </div>
 
-<div class="container py-4">
-    <!-- Cuộc thi -->
-    <div class="mb-4">
-        <h3 class="fw-bold title text-uppercase text-center color-blue">Các cuộc thi</h3>
-        <div class="title-line">
-        </div>
-    </div>
-    <div *ngIf="contests" class="contest-list position-relative">
-        <div class="prev-arrow arrow-list-contest slick-arrow">
-            <i class="fas fa-chevron-left"></i>
-        </div>
-        <ngx-slick-carousel class="carousel row slick-list-contest row" [config]="sliderContest">
-            <app-contest-item ngxSlickItem *ngFor="let item of contests" class="col-3 contest-item" [item]="item">
-            </app-contest-item>
-        </ngx-slick-carousel>
-        <div class="next-arrow arrow-list-contest slick-arrow">
-            <i class="fas fa-chevron-right"></i>
-        </div>
-    </div>
-    <div *ngIf="!contests" class="d-flex justify-content-center mb-3">
-        <div class="contest-loading-desktop container">
-            <div class="row">
-                <app-contest-load-item class="col-3">
-                </app-contest-load-item>
-                <app-contest-load-item class="col-3">
-                </app-contest-load-item>
-                <app-contest-load-item class="col-3">
-                </app-contest-load-item>
-                <app-contest-load-item class="col-3">
-                </app-contest-load-item>
-            </div>
-        </div>
-        <div class="contest-loading-tablet container">
-            <div class="  d-flex justify-content-around ">
-                <app-contest-load-item class=" col-6">
-                </app-contest-load-item>
-                &nbsp;
-                &nbsp;&nbsp;
-                <app-contest-load-item class="col-6">
-                </app-contest-load-item>
-            </div>
-        </div>
-
-        <div class="contest-loading-mobile">
-            <div class="container">
-                <app-contest-load-item class="col-12">
-                </app-contest-load-item>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid list-student-point-box ">
-    <div class="prev-student-arrow arrow-list-student">
-        <i class="fas fa-chevron-left"></i>
-    </div>
-    <div class="container  py-4">
-        <h4 class="text-center mb-3 title-student-point text-white">SINH VIÊN CÓ THÀNH TÍCH XUẤT SẮC</h4>
-        <div class="d-flex justify-content-center">
-            <nz-select [(ngModel)]="selectedMajor" (ngModelChange)="getResultWhereMajor($event)"
-                (nzScrollToBottom)="loadMore()" nzAllowClear [nzDropdownRender]="renderTemplate"
-                [nzPlaceHolder]="nameSelectMajor">
-                <nz-option *ngFor="let o of majors" [nzValue]="o.slug" [nzLabel]="o.name">
-                    {{o}}
-                </nz-option>
-            </nz-select>
-            <ng-template #renderTemplate>
-                <nz-spin *ngIf="isLoading"></nz-spin>
-            </ng-template>
-        </div>
-
-        <div class="list-student-point-hight  mt-3">
-            <div *ngIf="!statusResult" class="d-flex justify-content-center loading-student-rank-box align-items-center">
-                <div *ngIf="!loadingResultContest" class="loading-student-rank"></div>
-                <div *ngIf="loadingResultContest" class="">
-                    <p class="text-white">Kết quả chưa được cập nhật!!!</p>
-                </div>
-            </div>
-            <ngx-slick-carousel *ngIf="statusResult" class="carousel row slick-slide-student"
-                [config]="sliderStudentPointHight">
-                <div ngxSlickItem *ngFor="let itemStu of resultMajor" class="student-point-item slide">
-                    <div class="student-point-item-in text-center">
-                        <img class="student-point-avatar text-center" [src]="itemStu.user.avatar" alt="">
-                        <div *ngIf="itemStu.rank < 4" class="d-flex justify-content-center align-items-center">
-                            <img class="mt-3" [ngStyle]=" {'width' : '50px' , 'height' : '50px' , 'object-fit' : 'cover'
-                        , 'border-radius' : '50px' }" [src]="itemStu.rank == 1 ? './../../../assets/img/4.png' : itemStu.rank == 2 ?
-                        './../../../assets/img/5.png' : './../../../assets/img/6.png'" alt="">
-                        </div>
-                        <div *ngIf="itemStu.rank > 4 || itemStu.rank == 4" class="student-rank">{{itemStu.rank}}</div>
-                        <p class="student-ponit-number fs-4 my-4"><i class="fas fa-star"></i> <span class="fs-5">
-                                {{itemStu.reward_point}}</span>
-                        </p>
-                        <h4 class="student-name">
-                            {{itemStu.user.name}}
-                        </h4>
-
-                    </div>
-                </div>
-                <div ngxSlickItem *ngFor="let itemStu of resultMajor" class="student-point-item slide">
-                    <div class="student-point-item-in text-center">
-                        <img class="student-point-avatar text-center" [src]="itemStu.user.avatar" alt="">
-                        <div *ngIf="itemStu.rank < 4" class="d-flex justify-content-center align-items-center">
-                            <img class="mt-3" [ngStyle]=" {'width' : '50px' , 'height' : '50px' , 'object-fit' : 'cover'
-                        , 'border-radius' : '50px' }" [src]="itemStu.rank == 1 ? './../../../assets/img/4.png' : itemStu.rank == 2 ?
-                        './../../../assets/img/5.png' : './../../../assets/img/6.png'" alt="">
-                        </div>
-                        <div *ngIf="itemStu.rank > 4 || itemStu.rank == 4" class="student-rank">{{itemStu.rank}}</div>
-                        <p class="student-ponit-number fs-4 my-4"><i class="fas fa-star"></i> <span class="fs-5">
-                                {{itemStu.reward_point}}</span>
-                        </p>
-                        <h4 class="student-name">
-                            {{itemStu.user.name}}
-                        </h4>
-
-                    </div>
-                </div>
-            </ngx-slick-carousel>
-        </div>
-
-        <div class="d-flex justify-content-center pt-3">
-            <a href="" class="btn-review-more text-center">Xem thêm
-            </a>
-        </div>
-    </div>
-    <div class="next-student-arrow arrow-list-student">
-        <i class="fas fa-chevron-right"></i>
-    </div>
-</div>
-
 <div class="assess-compacity-wraper py-4">
-    <div class="container position-relative">
+    <div class="container-fuild position-relative">
         <div class="mb-4">
-            <h3 class="fw-bold title text-uppercase text-center text-uppercase color-blue">Đánh giá của doanh nghiệp
+            <h3 class="fw-bold title text-uppercase text-center text-uppercase color-blue">THƯ VIỆN HÌNH ẢNH
             </h3>
             <div class="title-line">
             </div>
         </div>
 
 
-        <div class="assess-content-box position-relative">
+        <div class="position-relative">
             <ngx-slick-carousel class="carousel" [config]="sliderAssessCompacity">
                 <div class="d-flex" ngxSlickItem>
-                    <div class="col-7 assess-content-left">
+                    <!-- <div class="col-7 assess-content-left">
                         <div class="my-5">
                             <img class="assess-compacity-logo"
                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShxdlbXdd7jnjF6SPFII6bnLNa8hsK1Npf1w&usqp=CAU"
@@ -261,14 +120,14 @@
                             </p>
                             <h4 class="assess-compacity-name float-end mx-3">HT.Vũ Chí Thành</h4>
                         </div>
-                    </div>
-                    <div class="col-5 company-represent">
+                    </div> -->
+                    <div class="col-12 company-represent">
                         <img class="ml-5"
-                            src="./../../../assets/img/Tạo-dáng-chụp-ảnh-doanh-nhân-nam-removebg-preview.png" alt="">
+                            src="https://phothongcaodang.fpt.edu.vn/wp-content/uploads/Landingpage-01.jpg" alt="">
                     </div>
                 </div>
                 <div class="d-flex" ngxSlickItem>
-                    <div class="col-7 assess-content-left">
+                    <!-- <div class="col-7 assess-content-left">
                         <div class="my-5">
                             <img class="assess-compacity-logo"
                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShxdlbXdd7jnjF6SPFII6bnLNa8hsK1Npf1w&usqp=CAU"
@@ -288,14 +147,14 @@
                             </p>
                             <h4 class="assess-compacity-name float-end mx-3">HT.Vũ Chí Thành</h4>
                         </div>
-                    </div>
-                    <div class="col-5 company-represent">
+                    </div> -->
+                    <div class="col-12 company-represent">
                         <img class="ml-5"
-                            src="./../../../assets/img/Tạo-dáng-chụp-ảnh-doanh-nhân-nam-removebg-preview.png" alt="">
+                            src="https://phothongcaodang.fpt.edu.vn/wp-content/uploads/Landingpage-01.jpg" alt="">
                     </div>
                 </div>
                 <div class="d-flex" ngxSlickItem>
-                    <div class="col-7 assess-content-left">
+                    <!-- <div class="col-7 assess-content-left">
                         <div class="my-5">
                             <img class="assess-compacity-logo"
                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShxdlbXdd7jnjF6SPFII6bnLNa8hsK1Npf1w&usqp=CAU"
@@ -315,10 +174,10 @@
                             </p>
                             <h4 class="assess-compacity-name float-end mx-3">HT.Vũ Chí Thành</h4>
                         </div>
-                    </div>
-                    <div class="col-5 company-represent">
+                    </div> -->
+                    <div class="col-12 company-represent">
                         <img class="ml-5"
-                            src="./../../../assets/img/Tạo-dáng-chụp-ảnh-doanh-nhân-nam-removebg-preview.png" alt="">
+                            src="https://phothongcaodang.fpt.edu.vn/wp-content/uploads/Landingpage-01.jpg" alt="">
                     </div>
                 </div>
             </ngx-slick-carousel>

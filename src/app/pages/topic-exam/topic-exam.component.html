@@ -1,0 +1,141 @@
+<app-loading-page [status]="isFetchingCapacity"></app-loading-page>
+<div class="capacity py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col col-lg-9 col-md-12 col-sm-12 col-12">
+        <!-- breadcrumb -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb" *ngIf="!isFetchingCapacity">
+            <li class="breadcrumb-item"><a routerLink="/">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a routerLink="/test-nang-luc">Test năng lực</a></li>
+          </ol>
+        </nav>
+        <div *ngIf="isFetchingCapacity">
+          <ngx-skeleton-loader [theme]="{width: '50%'}"></ngx-skeleton-loader>
+        </div>
+        <!-- breadcrumb -->
+
+        <div class="capacity__info">
+          <div *ngIf="!isFetchingCapacity">
+
+            <h1 class="capacity__info-name">
+              <span>Bài thi ca thi của kì :</span> 
+            </h1>
+
+            <!-- <div class="capacity__info-desc">
+              <strong>Nội dung: </strong>
+
+              <button class="capacity__info-desc-btn btn-base-type-bg fw-normal rounded p-1 px-2" >Chi tiết</button>
+            </div> -->
+
+            <div class="capacity__info-footer">
+              <div class="capacity__info-enterprise">
+                <div class="capacity__info-enterprise-icon">
+                  <i class="fa-solid fa-building"></i>
+                </div>
+
+                <div>
+                  <strong>Doanh nghiệp: </strong>
+                  <span class="capacity__info-enterprise-name">FPT Software</span>
+                </div>
+              </div>
+
+              <button class="btn capacity__info-footer-btn btn-register btn-base-type-bg"></button>
+            </div>
+          </div>
+
+          <!-- skeleton -->
+          <div *ngIf="isFetchingCapacity">
+            <div class="capacity__info-time-start">
+              <ngx-skeleton-loader class="flex-fill" [theme]="{width: '50%', margin: 0}"></ngx-skeleton-loader>
+            </div>
+
+            <h1 class="capacity__info-name d-flex">
+              <ngx-skeleton-loader class="flex-fill" [theme]="{width: '100%', margin: 0}"></ngx-skeleton-loader>
+            </h1>
+
+            <div class="capacity__info-desc">
+              <ngx-skeleton-loader [theme]="{width: '200px', margin: 0}"></ngx-skeleton-loader>
+            </div>
+
+            <div class="capacity__info-footer">
+              <ngx-skeleton-loader class="flex-fill" [theme]="{width: '70%'}"></ngx-skeleton-loader>
+
+              <ngx-skeleton-loader class="flex-fill text-end" [theme]="{width: '30%', height: '35px'}"></ngx-skeleton-loader>
+            </div>
+          </div>
+          <!-- end skeleton -->
+        </div>
+
+  
+
+        <div class="capacity__test" #testList>
+          <div class="capacity__test-heading d-flex justify-content-between align-items-center">
+            <h2 class="capacity__test-title fw-bold fs-5 color-blue">Danh sách ca thi</h2>
+            <span class="capacity__test-heading-action" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false">Mở rộng tất cả</span>
+          </div>
+
+     
+          <ul class="capacity__test-list" *ngIf="!isFetchingCapacity">
+            <li *ngFor="let round of ListExam; let i = index" class="capacity__test-list-item" style="margin-left: 20px;" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + i" aria-expanded="false" [attr.aria-controls]="'collapse-' + i">
+              <div class="capacity__test-list-item-inner">
+                <div class="capacity__test-list-item-icon">
+                  <div class="capacity__test-list-item-icon--plus">
+                    <i class="fa-solid fa-plus"></i>
+                  </div>
+
+                  <div class="capacity__test-list-item-icon--minus">
+                    <i class="fa-solid fa-minus"></i>
+                  </div>
+                </div>
+
+                <h2 class="capacity__test-name"></h2>
+              </div>
+
+              <div class="collapse multi-collapse capacity__test-detail">
+                <div class="d-flex capacity__test-detail-time">
+                  <div class="capacity__test-detail-time-icon mb-2">
+                    <i class="fa-solid fa-clock"></i>
+                  </div>
+
+                  <!-- {{ round.start_time | formatDate }} - {{ round.end_time | formatDate }} -->
+                </div>
+
+                <!-- <div class="capacity__test-detail-content">
+                  <strong>Nội dung:</strong>
+
+                  <div [innerHTML]="round.description"></div>
+                </div> -->
+
+                <a class="btn btn-register capacity__test-detail-btn">Vào thi</a>
+              </div>
+            </li>
+
+            <li *ngIf="!ListExam" style="text-align: center;padding: 20px 0;">Bạn chưa có đề thi!</li>
+          </ul>
+
+          <!-- skeleton -->
+          <ul class="capacity__test-list" *ngIf="isFetchingCapacity">
+            <ngx-skeleton-loader count="3" [theme]="{height: '35px', margin: '0 0 6px'}"></ngx-skeleton-loader>
+          </ul>
+          <!-- skeleton -->
+        </div>
+
+    
+      </div>
+
+  
+    </div>
+  </div>
+</div>
+
+<ng-template #description let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title m-0 fw-bold">Nội dung bài Test năng lực</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <!-- <div class="modal-body" [innerHTML]="capacity.description"></div> -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Đóng</button>
+  </div>
+</ng-template>
